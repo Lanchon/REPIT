@@ -13,7 +13,7 @@
 
 set -e
 
-version="2016-02-13"
+version="2016-02-16"
 deviceName="i9100"
 
 sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
@@ -26,13 +26,6 @@ tdir=/tmp/lanchon-repit
 tchunk=$tdir/chunk.tmp
 
 tpar=$tdir/partition-info/p
-
-# disk area to use for movable partitions:
-heapStart=344064
-heapEnd=30769152
-
-# minimum partition size: 8 MiB
-minParSize=$(( 8 * 1024 * 2 ))
 
 fatal() {
     echo
@@ -56,7 +49,7 @@ printSizeMiB() {
 checkTool() {
     #info "checking tool: $1"
     if [ -z "$(which "$1")" ]; then
-        fatal "required tool '$1' missing (please use TWRP to run this package)"
+        fatal "required tool '$1' missing (please use a recent version of TWRP to run this package)"
     fi
 }
 
@@ -194,10 +187,36 @@ setup() {
     # rereadParTable requires everything unmounted
     rereadParTable
 
+    info "detecting eMMC size"
+
+    # disk area to use for movable partitions:
+    heapStart=344064
+    heapEnd=
+
+    if [ ! -e $sdev ]; then
+        fatal "eMMC device not found"
+    fi
+    local deviceSize=$(cat $sdev/size)
+    local heapEnd8GB=15261696
+    local heapEnd16GB=30769152
+    local heapEnd32GB=62513152
+    if [ $(( deviceSize < heapEnd8GB )) -ne 0 ]; then
+        fatal "eMMC size too small"
+    elif [ $(( deviceSize < heapEnd16GB )) -ne 0 ]; then
+        heapEnd=$heapEnd8GB
+        info "eMMC size is 8 GB"
+    elif [ $(( deviceSize < heapEnd32GB )) -ne 0 ]; then
+        heapEnd=$heapEnd16GB
+        info "eMMC size is 16 GB"
+    else
+        heapEnd=$heapEnd32GB
+        info "eMMC size is 32 GB"
+    fi
+
     info "checking existing partition layout"
 
     local n
-    for n in $(seq 9 12); do
+    for n in $(seq 1 12); do
         if [ ! -e ${spar}$n ]; then
             fatal "missing partition #$n"
         fi
@@ -239,6 +258,9 @@ setup() {
     fi
 
     info "checking new partition layout"
+
+    # minimum partition size: 8 MiB
+    minParSize=$(( 8 * 1024 * 2 ))
 
     initParNew  9  "$system_size"  "$system_content"  "$system_fs" ext4
     initParNew 10    "$data_size"    "$data_content"    "$data_fs" ext4
@@ -306,20 +328,20 @@ moveDataChunk() {
     local size=$4
     echo "-----  moving $(( size / (1024 * 2) )) MiB chunk: $(( oldStart / (1024 * 2) )) MiB -> $(( newStart / (1024 * 2) )) MiB"
     # WARNING: dd has a dangerous 4 GiB wraparound bug!!!
-    #dd if=$ddev of=$tchunk bs=512 skip=$oldStart count=$size
-    #dd if=$tchunk of=$ddev bs=512 seek=$newStart count=$size
+    #dd if=$ddev of=$tchunk bs=512 skip=$oldStart count=$size conv=noerror,sync
+    #dd if=$tchunk of=$ddev bs=512 seek=$newStart count=$size conv=noerror,sync
     info "creating temporary partition to read chunk at device offset $(( oldStart / (1024 * 2) )) MiB"
     runParted mkpart primary $oldStart $(( $oldStart + $size - 1 ))
     rereadParTable
     info "reading data"
-    dd if=${dpar}$n of=$tchunk bs=1M
+    dd if=${dpar}$n of=$tchunk bs=512 conv=noerror,sync
     info "deleting the temporary partition"
     runParted rm $n
     info "creating temporary partition to write chunk at device offset $(( newStart / (1024 * 2) )) MiB"
     runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
     rereadParTable
     info "writing data"
-    dd if=$tchunk of=${dpar}$n bs=1M
+    dd if=$tchunk of=${dpar}$n bs=512 conv=noerror,sync
     info "deleting the temporary partition"
     runParted rm $n
     #rereadParTable
@@ -629,7 +651,7 @@ checkUnmount() {
             hint="please unmount all partitions and run this package again; if that still does not work, reboot TWRP and try again"
         fi
     else
-        hint="please user TWRP's file manager to copy this package to /tmp, then unmount all partitions and run it again from there"
+        hint="please use TWRP's file manager to copy this package to /tmp, then unmount all partitions and run it again from there"
     fi
 
     info "unmounting all partitions"
