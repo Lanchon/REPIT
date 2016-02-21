@@ -13,7 +13,7 @@
 
 set -e
 
-version="2016-02-12"
+version="2016-02-13"
 deviceName="i9100"
 
 sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
@@ -31,10 +31,11 @@ tpar=$tdir/partition-info/p
 heapStart=344064
 heapEnd=30769152
 
-# minimum partition size: 8 MB
+# minimum partition size: 8 MiB
 minParSize=$(( 8 * 1024 * 2 ))
 
 fatal() {
+    echo
     >&2 echo "FATAL:" "$@"
     exit 1
 }
@@ -45,6 +46,11 @@ warning() {
 
 info() {
     echo "info:" "$@"
+}
+
+printSizeMiB() {
+    local size="$1"
+    echo "$(( size / (1024 * 2) )) MiB"
 }
 
 checkTool() {
@@ -59,11 +65,14 @@ runParted() {
 }
 
 rereadParTable() {
+    local hint="$1"
     info "rereading partition table"
     sync
     blockdev --flushbufs $ddev
-    blockdev --rereadpt $ddev
-    sleep 0.5
+    if ! blockdev --rereadpt $ddev; then
+        fatal "unable to reread the partition table${hint}"
+    fi
+    sleep 1
 }
 
 parStart() {
@@ -116,8 +125,8 @@ initParNew() {
         fs=$defaultFs
     fi
 
-    # size granularity: MB
-    # size unit: GB
+    # size granularity: MiB
+    # size unit: GiB
     local granularity=2048
     local unit=1024
     case "$size" in
@@ -211,6 +220,7 @@ setup() {
     local pn
     local gap
     for n in $(seq 9 12); do
+        info "current size: $(parName $n): $(printSizeMiB $(parSize $spar $n))"
         pn=$(( $n - 1 ))
         gap=$(( $(parStart $spar $n) - $(parEnd $spar $pn) ))
         if [ $(( gap < 0 )) -ne 0 ]; then
@@ -251,6 +261,7 @@ setup() {
             fi
             echo -n $totalSize >${tpar}$n/size
         fi
+        info "new size: $(parName $n): $(printSizeMiB $(parSize $tpar $n))"
     done
 
     echo -n $heapStart >${tpar}9/start
@@ -293,18 +304,18 @@ moveDataChunk() {
     local oldStart=$2
     local newStart=$3
     local size=$4
-    echo "-----  moving $(( size / (1024 * 2) )) MB chunk: $(( oldStart / (1024 * 2) )) MB -> $(( newStart / (1024 * 2) )) MB"
-    # WARNING: dd has a dangerous 4GB wraparound bug!!!
+    echo "-----  moving $(( size / (1024 * 2) )) MiB chunk: $(( oldStart / (1024 * 2) )) MiB -> $(( newStart / (1024 * 2) )) MiB"
+    # WARNING: dd has a dangerous 4 GiB wraparound bug!!!
     #dd if=$ddev of=$tchunk bs=512 skip=$oldStart count=$size
     #dd if=$tchunk of=$ddev bs=512 seek=$newStart count=$size
-    info "creating temporary partition to read chunk at device offset $(( oldStart / (1024 * 2) )) MB"
+    info "creating temporary partition to read chunk at device offset $(( oldStart / (1024 * 2) )) MiB"
     runParted mkpart primary $oldStart $(( $oldStart + $size - 1 ))
     rereadParTable
     info "reading data"
     dd if=${dpar}$n of=$tchunk bs=1M
     info "deleting the temporary partition"
     runParted rm $n
-    info "creating temporary partition to write chunk at device offset $(( newStart / (1024 * 2) )) MB"
+    info "creating temporary partition to write chunk at device offset $(( newStart / (1024 * 2) )) MiB"
     runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
     rereadParTable
     info "writing data"
@@ -321,7 +332,7 @@ moveData() {
     local oldStart=$2
     local newStart=$3
     local size=$4
-    # chunk size: 256 MB
+    # chunk size: 256 MiB
     local chunk=$(( 256 * 1024 * 2 ))
     local n
     local m
@@ -357,7 +368,7 @@ processParMove() {
 #echo "#####  calculating MD5 hash of partition"
 #md5sum ${dpar}$n
         #info "ensure no access if move is interrupted by deleting the partition"
-        info "deleting the partition to workaround dd's 4GB wraparound bug"
+        info "deleting the partition to workaround dd's 4 GiB wraparound bug"
         runParted rm $n
         #rereadParTable
         moveData $n $oldStart $newStart $size
@@ -613,12 +624,12 @@ checkUnmount() {
         if [ "$(dirname $(readlink -f "$1"))" != "/tmp" ]; then
             info "copying package to /tmp"
             cp -f "$1" "/tmp/"
-            hint="(this package copied itself to /tmp; please unmount all partitions and run it from there)"
+            hint="this package copied itself to /tmp; please unmount all partitions and run it again from there"
         else
-            hint="(please unmount all partitions and run this package again)"
+            hint="please unmount all partitions and run this package again; if that still does not work, reboot TWRP and try again"
         fi
     else
-        hint="(please unmount all partitions, copy this package to /tmp and run it from there)"
+        hint="please user TWRP's file manager to copy this package to /tmp, then unmount all partitions and run it again from there"
     fi
 
     info "unmounting all partitions"
@@ -626,23 +637,13 @@ checkUnmount() {
     local dev
     for dev in $(grep -ow "^${dpar}[0-9]*" /proc/mounts | sort -u); do
         if ! umount $dev; then
-            fatal "unable to unmount all partitions $hint"
+            fatal "unable to unmount all partitions ($hint)"
         fi
     done
 
     # rereadParTable requires everything unmounted
-    if ! rereadParTable; then
-        fatal "unable to reread the partition table $hint"
-    fi
+    rereadParTable " ($hint)"
 
-}
-
-printPackageNameParDefaults() {
-    local par="$1"
-    parsedSize="$2"
-    parsedContent="$3"
-    parsedFs="$4"
-    info "defaults for '$par': size=$parsedSize, content=$parsedContent, fs=$parsedFs"
 }
 
 parsePackageNameParData() {
@@ -675,10 +676,7 @@ parsePackageName() {
 
     info "valid package name: <prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>"
     info "valid partition configuration: [<size-in-GiB>|same|min|max][+[keep|wipe][+[ext4|vfat]]]"
-    printPackageNameParDefaults system  same keep ext4
-    printPackageNameParDefaults data    same keep ext4
-    printPackageNameParDefaults sdcard  max  keep vfat
-    printPackageNameParDefaults preload min  wipe ext4
+    info "partition configuration defaults: system|data|preload=same+keep+ext4 sdcard=same+keep+vfat"
 
     info "parsing package name"
     if [ -z "$name" ]; then
@@ -696,11 +694,11 @@ parsePackageName() {
     data_size="$parsedSize"
     data_content="$parsedContent"
     data_fs="$parsedFs"
-    parsePackageNameParData "$name" sdcard  max  keep vfat
+    parsePackageNameParData "$name" sdcard  same keep vfat
     sdcard_size="$parsedSize"
     sdcard_content="$parsedContent"
     sdcard_fs="$parsedFs"
-    parsePackageNameParData "$name" preload min  wipe ext4
+    parsePackageNameParData "$name" preload same keep ext4
     preload_size="$parsedSize"
     preload_content="$parsedContent"
     preload_fs="$parsedFs"
@@ -766,7 +764,7 @@ configureKeepData() {
     preload_content=keep
 }
 
-# <partition>_size: <fractional size in GB>|min|max|same
+# <partition>_size: <fractional-size-in-GiB>|min|max|same
 # <partition>_content: keep|wipe
 # <partition>_fs: ext4|vfat
 
