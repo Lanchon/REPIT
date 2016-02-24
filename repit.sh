@@ -68,16 +68,28 @@ rereadParTable() {
     sleep 1
 }
 
-parStart() {
-    cat ${1}$2/start
+parOldStart() {
+    cat ${spar}$1/start
 }
 
-parSize() {
-    cat ${1}$2/size
+parNewStart() {
+    cat ${tpar}$1/start
 }
 
-parEnd() {
-    echo $(( $(parStart $@) + $(parSize $@) ))
+parOldSize() {
+    cat ${spar}$1/size
+}
+
+parNewSize() {
+    cat ${tpar}$1/size
+}
+
+parOldEnd() {
+    echo $(( $(parOldStart $1) + $(parOldSize $1) ))
+}
+
+parNewEnd() {
+    echo $(( $(parNewStart $1) + $(parNewSize $1) ))
 }
 
 parName() {
@@ -91,10 +103,10 @@ initPar() {
     mkdir -p ${tpar}$n
     echo -n $2 >${tpar}$n/pname
     echo -n $3 >${tpar}$n/mname
-    if [ $(( $(parStart $spar $n) <= 0 )) -ne 0 ]; then
+    if [ $(( $(parOldStart $n) <= 0 )) -ne 0 ]; then
         fatal "$(parName $n): invalid start"
     fi
-    if [ $(( $(parSize $spar $n) <= 0 )) -ne 0 ]; then
+    if [ $(( $(parOldSize $n) <= 0 )) -ne 0 ]; then
         fatal "$(parName $n): invalid size"
     fi
 
@@ -124,7 +136,7 @@ initParNew() {
     local unit=1024
     case "$size" in
         same)
-            size=$(parSize $spar $n)
+            size=$(parOldSize $n)
             ;;
         min)
             size=$minParSize
@@ -232,16 +244,16 @@ setup() {
     initPar 11 UMS       sdcard
     initPar 12 HIDDEN    preload
 
-    if [ $(( $(parEnd $spar 8) != $heapStart )) -ne 0 ]; then
-        fatal "$(parName 8): unexpected end: $(parEnd $spar 8)"
+    if [ $(( $(parOldEnd 8) != $heapStart )) -ne 0 ]; then
+        fatal "$(parName 8): unexpected end: $(parOldEnd 8)"
     fi
     
     local pn
     local gap
     for n in $(seq 9 12); do
-        info "current size: $(parName $n): $(printSizeMiB $(parSize $spar $n))"
+        info "current size: $(parName $n): $(printSizeMiB $(parOldSize $n))"
         pn=$(( $n - 1 ))
-        gap=$(( $(parStart $spar $n) - $(parEnd $spar $pn) ))
+        gap=$(( $(parOldStart $n) - $(parOldEnd $pn) ))
         if [ $(( gap < 0 )) -ne 0 ]; then
             fatal "layout reversal between $(parName $pn) and $(parName $n)"
         fi
@@ -249,7 +261,7 @@ setup() {
             warning "unallocated space between $(parName $pn) and $(parName $n)"
         fi
     done
-    gap=$(( heapEnd - $(parEnd $spar 12) ))
+    gap=$(( heapEnd - $(parOldEnd 12) ))
     if [ $(( gap < 0 )) -ne 0 ]; then
         warning "the existing partition layout uses more space than expected"
     fi
@@ -269,11 +281,11 @@ setup() {
 
     local totalSize=$(( $heapEnd - $heapStart ))
     for n in $(seq 9 12); do
-        totalSize=$(( totalSize - $(parSize $tpar $n) ))
+        totalSize=$(( totalSize - $(parNewSize $n) ))
     done
     local maxPar
     for n in $(seq 9 12); do
-        if [ "$(parSize $tpar $n)" -eq "0" ]; then
+        if [ "$(parNewSize $n)" -eq "0" ]; then
             if [ -n "$maxPar" ]; then
                 fatal "more than one partition has its size set to 'max'"
             fi
@@ -283,15 +295,15 @@ setup() {
             fi
             echo -n $totalSize >${tpar}$n/size
         fi
-        info "new size: $(parName $n): $(printSizeMiB $(parSize $tpar $n))"
+        info "new size: $(parName $n): $(printSizeMiB $(parNewSize $n))"
     done
 
     echo -n $heapStart >${tpar}9/start
     for n in $(seq 10 12); do
-        echo -n $(parEnd $tpar $(( $n - 1 ))) >${tpar}$n/start
+        echo -n $(parNewEnd $(( $n - 1 ))) >${tpar}$n/start
     done
 
-    gap=$(( $heapEnd - $(parEnd $tpar 12) ))
+    gap=$(( $heapEnd - $(parNewEnd 12) ))
     if [ $(( gap < 0 )) -ne 0 ]; then
         fatal "the new partition layout requires more space than available"
     fi
@@ -586,7 +598,7 @@ processPar_vfat_keep_wet() {
 
 processPar() {
     echo "*****  processing $(parName $1)"
-    eval processPar_$(cat ${tpar}$1/fs)_$(cat ${tpar}$1/content)_$mode $1 ${dpar}$1 $(parStart $spar $1) $(parSize $spar $1) $(parStart $tpar $1) $(parSize $tpar $1)
+    eval processPar_$(cat ${tpar}$1/fs)_$(cat ${tpar}$1/content)_$mode $1 ${dpar}$1 $(parOldStart $1) $(parOldSize $1) $(parNewStart $1) $(parNewSize $1)
 }
 
 processParList() {
@@ -595,7 +607,7 @@ processParList() {
     if [ -z "$rest" ]; then
         processPar $1
     else
-        if [ $(( $(parEnd $tpar $1) > $(parStart $spar $2) )) -ne 0 ]; then
+        if [ $(( $(parNewEnd $1) > $(parOldStart $2) )) -ne 0 ]; then
             info "$(parName $1) will expand into disk area of $(parName $2)"
             info "deferring processing of $(parName $1)"
             processParList $rest
