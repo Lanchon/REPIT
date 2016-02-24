@@ -325,11 +325,10 @@ setup() {
 
 processParRecreate() {
     local n=$1
-    local dev=$2
-    local oldStart=$3
-    local oldSize=$4
-    local newStart=$5
-    local newSize=$6
+    local oldStart=$2
+    local oldSize=$3
+    local newStart=$4
+    local newSize=$5
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
         info "deleting the partition"
         runParted rm $n
@@ -409,13 +408,15 @@ processParMove() {
 #rereadParTable
 #echo "#####  calculating MD5 hash of partition"
 #md5sum ${dpar}$n
+        info "ensure that the destination partition can be created before starting the move"
+        processParRecreate $n $oldStart $size $newStart $size
         #info "ensure no access if move is interrupted by deleting the partition"
         info "deleting the partition to workaround dd's 4 GiB wraparound bug"
         runParted rm $n
         #rereadParTable
         moveData $n $oldStart $newStart $size
         #info "recreating the partition"
-        info "recreating the final partition"
+        info "creating the final partition"
         runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
         info "naming the partition"
         runParted name $n $(parGet $n pname)
@@ -445,7 +446,7 @@ processPar_ext4_wipe_wet() {
     local oldSize=$4
     local newStart=$5
     local newSize=$6
-    processParRecreate $@
+    processParRecreate $n $oldStart $oldSize $newStart $newSize
     info "formatting the partition in ext4 and trimming it"
     mke2fs -q -t ext4 -E discard $dev
 }
@@ -508,7 +509,7 @@ processPar_ext4_keep_wet() {
         info "shrinking the ext4 file system"
         resize2fs -f $dev ${newSize}s
         info "shrinking the partition entry"
-        processParRecreate $n $dev $oldStart $oldSize $oldStart $newSize
+        processParRecreate $n $oldStart $oldSize $oldStart $newSize
         checkFs_ext4 $n $dev
         moveSize=$newSize
     fi
@@ -523,7 +524,7 @@ processPar_ext4_keep_wet() {
     fi
     if [ $(( newSize > oldSize )) -ne 0 ]; then
         info "enlarging the partition entry"
-        processParRecreate $n $dev $newStart $oldSize $newStart $newSize
+        processParRecreate $n $newStart $oldSize $newStart $newSize
         info "enlarging the ext4 file system"
         resize2fs -f $dev ${newSize}s
         checkFs_ext4 $n $dev
@@ -555,7 +556,7 @@ processPar_vfat_wipe_wet() {
     local oldSize=$4
     local newStart=$5
     local newSize=$6
-    processParRecreate $@
+    processParRecreate $n $oldStart $oldSize $newStart $newSize
     info "formatting the partition in vfat"
     mkdosfs -I $dev
 }
