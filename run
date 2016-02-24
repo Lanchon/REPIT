@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+conf="system=1.0-data=same-sdcard=max-preload=min+wipe"
+
+if [ -e run.conf ]; then
+    source run.conf
+fi
+
+adb push repit.sh /tmp/
+echo
+adb shell sh /tmp/repit.sh "/tmp/lanchon-repit-XXXXXXXX-${conf}-i9100.zip"
