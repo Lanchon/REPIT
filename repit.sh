@@ -330,13 +330,21 @@ processParRecreate() {
     local newStart=$4
     local newSize=$5
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
-        info "deleting the partition"
+        info "deleting current partition"
         runParted rm $n
-        info "recreating the partition"
-        runParted mkpart primary $newStart $(( $newStart + $newSize - 1 ))
-        info "naming the partition"
-        runParted name $n $(parGet $n pname)
-        rereadParTable
+        info "creating new partition"
+        if runParted mkpart primary $newStart $(( $newStart + $newSize - 1 )); then
+            info "naming the partition"
+            runParted name $n $(parGet $n pname)
+            rereadParTable
+        else
+            info "attempting to restore previous partition"
+            runParted mkpart primary $oldStart $(( $oldStart + $oldSize - 1 ))
+            info "naming the partition"
+            runParted name $n $(parGet $n pname)
+            rereadParTable
+            fatal "unable to create new partition (previous partition was successfully restored)"
+        fi
     fi
 }
 
