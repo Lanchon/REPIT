@@ -326,18 +326,18 @@ moveDataChunk() {
     local oldStart=$2
     local newStart=$3
     local size=$4
-    echo "-----  moving $(( size / (1024 * 2) )) MiB chunk: $(( oldStart / (1024 * 2) )) MiB -> $(( newStart / (1024 * 2) )) MiB"
+    echo "-----  moving $(printSizeMiB $size) chunk: $(printSizeMiB $oldStart) -> $(printSizeMiB $newStart)"
     # WARNING: dd has a dangerous 4 GiB wraparound bug!!!
     #dd if=$ddev of=$tchunk bs=512 skip=$oldStart count=$size conv=noerror,sync
     #dd if=$tchunk of=$ddev bs=512 seek=$newStart count=$size conv=noerror,sync
-    info "creating temporary partition to read chunk at device offset $(( oldStart / (1024 * 2) )) MiB"
+    info "creating temporary partition to read chunk at device offset $(printSizeMiB $oldStart)"
     runParted mkpart primary $oldStart $(( $oldStart + $size - 1 ))
     rereadParTable
     info "reading data"
     dd if=${dpar}$n of=$tchunk bs=512 conv=noerror,sync
     info "deleting the temporary partition"
     runParted rm $n
-    info "creating temporary partition to write chunk at device offset $(( newStart / (1024 * 2) )) MiB"
+    info "creating temporary partition to write chunk at device offset $(printSizeMiB $newStart)"
     runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
     rereadParTable
     info "writing data"
