@@ -92,8 +92,16 @@ parNewEnd() {
     echo $(( $(parNewStart $1) + $(parNewSize $1) ))
 }
 
+parGet() {
+    cat ${tpar}$1/$2
+}
+
+parSet() {
+    echo -n "$3" >${tpar}$1/$2
+}
+
 parName() {
-    echo -n "partition #$1 /$(cat ${tpar}$1/mname) ($(cat ${tpar}$1/pname))"
+    echo -n "partition #$1 /$(parGet $1 mname) ($(parGet $1 pname))"
 }
 
 initPar() {
@@ -101,8 +109,8 @@ initPar() {
     local n=$1
 
     mkdir -p ${tpar}$n
-    echo -n $2 >${tpar}$n/pname
-    echo -n $3 >${tpar}$n/mname
+    $(parSet $n pname $2)
+    $(parSet $n mname $3)
     if [ $(( $(parOldStart $n) <= 0 )) -ne 0 ]; then
         fatal "$(parName $n): invalid start"
     fi
@@ -173,9 +181,9 @@ initParNew() {
             ;;
     esac    
 
-    echo -n $size >${tpar}$n/size
-    echo -n $content >${tpar}$n/content
-    echo -n $fs >${tpar}$n/fs
+    $(parSet $n size $size)
+    $(parSet $n content $content)
+    $(parSet $n fs $fs)
 
 }
 
@@ -293,14 +301,14 @@ setup() {
             if [ $(( $totalSize < minParSize )) -ne 0 ]; then
                 fatal "$(parName $n): invalid new size"
             fi
-            echo -n $totalSize >${tpar}$n/size
+            $(parSet $n size $totalSize)
         fi
         info "new size: $(parName $n): $(printSizeMiB $(parNewSize $n))"
     done
 
-    echo -n $heapStart >${tpar}9/start
+    $(parSet 9 start $heapStart)
     for n in $(seq 10 12); do
-        echo -n $(parNewEnd $(( $n - 1 ))) >${tpar}$n/start
+        $(parSet $n start $(parNewEnd $(( $n - 1 ))))
     done
 
     gap=$(( $heapEnd - $(parNewEnd 12) ))
@@ -328,7 +336,7 @@ processParRecreate() {
         info "recreating the partition"
         runParted mkpart primary $newStart $(( $newStart + $newSize - 1 ))
         info "naming the partition"
-        runParted name $n $(cat ${tpar}$n/pname)
+        runParted name $n $(parGet $n pname)
         rereadParTable
     fi
 }
@@ -410,7 +418,7 @@ processParMove() {
         info "recreating the final partition"
         runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
         info "naming the partition"
-        runParted name $n $(cat ${tpar}$n/pname)
+        runParted name $n $(parGet $n pname)
         rereadParTable
 #echo "#####  calculating MD5 hash of partition"
 #md5sum ${dpar}$n
@@ -598,7 +606,7 @@ processPar_vfat_keep_wet() {
 
 processPar() {
     echo "*****  processing $(parName $1)"
-    eval processPar_$(cat ${tpar}$1/fs)_$(cat ${tpar}$1/content)_$mode $1 ${dpar}$1 $(parOldStart $1) $(parOldSize $1) $(parNewStart $1) $(parNewSize $1)
+    eval processPar_$(parGet $1 fs)_$(parGet $1 content)_$mode $1 ${dpar}$1 $(parOldStart $1) $(parOldSize $1) $(parNewStart $1) $(parNewSize $1)
 }
 
 processParList() {
