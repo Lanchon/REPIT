@@ -525,7 +525,7 @@ processPar_vfat_wipe_dry() {
     local newStart=$5
     local newSize=$6
     info "will format the partition in vfat"
-    checkTool mkfs.vfat
+    checkTool mkdosfs
 }
 
 processPar_vfat_wipe_wet() {
@@ -537,7 +537,7 @@ processPar_vfat_wipe_wet() {
     local newSize=$6
     processParRecreate $@
     info "formatting the partition in vfat"
-    mkfs.vfat $dev
+    mkdosfs -I $dev
 }
 
 checkFs_vfat() {
@@ -632,7 +632,7 @@ checkTools() {
     checkTool e2fsck
     checkTool dd
     checkTool resize2fs
-    checkTool mkfs.vfat
+    checkTool mkdosfs
     checkTool dosfsck
     checkTool readlink
     checkTool basename
