@@ -666,12 +666,12 @@ checkUnmount() {
         if [ "$(dirname $(readlink -f "$1"))" != "/tmp" ]; then
             info "copying package to /tmp"
             cp -f "$1" "/tmp/"
-            hint="this package copied itself to /tmp; please unmount all partitions and run it again from there"
+            hint="this package copied itself to /tmp; please run it again from there"
         else
-            hint="please unmount all partitions and run this package again; if that still does not work, reboot TWRP and try again"
+            hint="please reboot TWRP and run this package again; run it immediately after boot up, do not enable USB mass storage; note that you might be told to run it yet again from /tmp; make sure your phone is not encrypted: encrypted phones are not supported"
         fi
     else
-        hint="please use TWRP's file manager to copy this package to /tmp, then unmount all partitions and run it again from there"
+        hint="please use TWRP's file manager to copy this package to /tmp and run it again from there"
     fi
 
     info "unmounting all partitions"
