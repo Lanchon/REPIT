@@ -13,7 +13,7 @@
 
 set -e
 
-version="2016-02-16"
+version="2016-02-25"
 deviceName="i9100"
 
 sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
