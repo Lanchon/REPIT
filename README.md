@@ -90,6 +90,8 @@ full screen log by hitting the back button once, then the center button at the b
 like a TV screen. afterwards, you can try reflashing the script if you understand what happened and flashing it
 again makes sense.
 
+note that using `adb sideload` will not work since the configuration parameters are passed through the filename.
+
 > **PLEASE NOTE:** i am not interested in your _'did not work'_ report unless you post info from your log.
 if you cannot post any info from the log, then please just do not post at all. thank you.
 
