@@ -30,14 +30,16 @@ type changes. download the script, rename it to express your desired configurati
 3. get the zip from the link below.
 4. if needed, **rename it to express your desired configuration** (see below).
 5. **PLUG INTO A POWER SOURCE.** this operation might take a long time and **must not be interrupted.**
-6. flash the script. in case it fails to start:
-   - if the script cannot unmount all partitions, it will copy itself to the /tmp directory and ask you to flash it
-     a second time from there.
-   - if it still fails to unmount all partitions, or if it fails to lock the eMMC with error 'unable to reread the
-     partition table', then you need to reboot TWRP and reflash immediately after boot up. (you may actually need to
-     flash twice, the second time from '/tmp'.) do not do anything after boot up and before flashing! in particular,
-     **do not mount the sdcard as USB mass storage.**
-   - if locking issues remain, your phone is probably encrypted; this script is not compatible with encrypted phones.
+6. flash the zip locally on the phone. (do not sideload it: sideloading conceals the filename from the device.)
+
+in case the script fails to start:
+- if the script cannot unmount all partitions, it will copy itself to the /tmp directory and ask you to flash it
+  a second time from there.
+- if it still fails to unmount all partitions, or if it fails to lock the eMMC with error 'unable to reread the
+  partition table', then you need to reboot TWRP and reflash the script immediately after boot up. (you may
+  actually need to reflash twice, the second time from '/tmp'.) do not do anything after boot up and before
+  flashing! in particular, **do not mount the sdcard as USB mass storage.**
+- if locking issues remain, your phone is probably encrypted; this script is not compatible with encrypted phones.
 
 finally, go get a coffee or two. **do not, under any circumstance, interrupt this script !!!**
 
