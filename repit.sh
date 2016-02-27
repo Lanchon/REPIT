@@ -637,6 +637,7 @@ processParList() {
 }
 
 checkDevice() {
+    checkTool getprop
     case ":$(getprop ro.product.device):$(getprop ro.build.product):" in
         *:galaxys2:*) ;;
         *:i9100:*) ;;
