@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+device="$1"
+
+deviceScript="device/$device.sh"
+out="build/lanchon-repit-$device.sh"
+
+if [ ! -e "$deviceScript" ]; then
+    >&2 echo "device not found: '$device'"
+    exit 1
+fi
+
+rm -f "$out"
+
+>>"$out" cat repit.sh
+>>"$out" echo
+>>"$out" cat repit-par-tools.sh
+>>"$out" echo
+>>"$out" cat repit-fs-ext4.sh
+>>"$out" echo
+>>"$out" cat repit-fs-vfat.sh
+>>"$out" echo
+>>"$out" cat "$deviceScript"
+>>"$out" echo
+>>"$out" echo "#####################################################"
+>>"$out" echo
+>>"$out" echo "deviceName='$device'"
+>>"$out" echo
+>>"$out" echo 'main "$@"'
