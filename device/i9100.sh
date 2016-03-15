@@ -53,14 +53,26 @@ device_init() {
 
 device_initPartitions() {
 
+    # the crypto footer size:
+    local footerSize=$(( 16384 / sectorSize ))
+    # not all partition types support crypto footers; those that do not will ignore the value passed to initPartition.
+    # also, not all devices use crypto footers; on those devices, pass a value of zero to initPartition for all partitions.
+
     # the set of partitions that can be modified by REPIT:
-    #     <gpt-number>  <gpt-name>  <friendly-name> <conf-defaults>
-    initPartition    9  FACTORYFS   system          "same keep ext4"
-    initPartition   10  DATAFS      data            "same keep ext4"
-    initPartition   11  UMS         sdcard          "same keep vfat"
-    initPartition   12  HIDDEN      preload         "same keep ext4"
+    #     <gpt-number>  <gpt-name>  <friendly-name> <conf-defaults>     <crypto-footer>
+    #initPartition   7  CACHE       cache           "same keep ext4"    0
+    #initPartition   8  MODEM       modem           "same keep raw"     0
+    initPartition    9  FACTORYFS   system          "same keep ext4"    0
+    initPartition   10  DATAFS      data            "same keep ext4"    $footerSize
+    initPartition   11  UMS         sdcard          "same keep vfat"    0
+    initPartition   12  HIDDEN      preload         "same keep ext4"    0
+
+    # resizing cache is disabled for now since i am not sure that the modem partition can be safely moved simply by updating
+    # the GPT and not changing the PIT. it is possible that whatever code boots up the modem might read the partition offset
+    # from the PIT and not the GPT. it is also possible that the device might brick if the modem cannot be brought up.
 
     # the set of modifiable partitions that can be configured by the user (overriding <conf-defaults>):
+    #configurablePartitions="7 $(seq 9 12)"
     configurablePartitions="$(seq 9 12)"
     # for some partitions it may be unsafe to do anything besides moving them around; those should be left out of this set.
 

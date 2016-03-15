@@ -102,6 +102,14 @@ parNewSize() {
     cat ${tpar}$1/size
 }
 
+parFooterSize() {
+    cat ${tpar}$1/footerSize
+}
+
+parNewSizeMinusFooter() {
+    echo $(( $(parNewSize $1) - $(parFooterSize $1) ))
+}
+
 parNewSizeAligned() {
     cat ${tpar}$1/sizeAligned
 }
@@ -169,6 +177,7 @@ initPartition() {
     local pname=$2
     local fname=$3
     local conf=$4
+    local footerSize=$5
 
     mkdir -p ${tpar}$n
 
@@ -176,6 +185,8 @@ initPartition() {
     $(parSet $n fname $fname)
 
     initPartitionConf $n $conf
+
+    $(parSet $n footerSize $footerSize)
 
     initedPartitions="$initedPartitions $n"
 
