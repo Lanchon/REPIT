@@ -36,9 +36,12 @@ processPar_ext4_wipe_wet() {
     local oldSize=$4
     local newStart=$5
     local newSize=$6
+    local footerSize=$(parFooterSize $n)
+    local newFsSize=$(( newSize - footerSize ))
     processParRecreate $n $oldStart $oldSize $newStart $newSize
+    # TODO: wipe the crypto footer.
     info "formatting the partition in ext4 and trimming it"
-    mke2fs -q -t ext4 -E discard $dev
+    mke2fs -q -t ext4 -E discard $dev ${newFsSize}s
 }
 
 checkFs_ext4() {
@@ -81,7 +84,7 @@ processPar_ext4_keep_dry() {
         checkTool resize2fs
     fi
     if [ $(( newSize == oldSize )) -ne 0 ]; then
-        info "will enlarge the ext4 file system if needed to fill its partition"
+        info "will resize the ext4 file system if needed to fit its partition"
         checkTool resize2fs
     fi
     checkFs_ext4 $n $dev
@@ -94,12 +97,16 @@ processPar_ext4_keep_wet() {
     local oldSize=$4
     local newStart=$5
     local newSize=$6
+    local footerSize=$(parFooterSize $n)
+    local newFsSize=$(( newSize - footerSize ))
     local moveSize=$oldSize
+    # note: REPIT should not be able to start on encrypted phones due to the block device being locked.
     if [ $(( newSize < oldSize )) -ne 0 ]; then
         info "shrinking the ext4 file system"
-        resize2fs -f $dev ${newSize}s
+        resize2fs -f $dev ${newFsSize}s
         info "shrinking the partition entry"
         processParRecreate $n $oldStart $oldSize $oldStart $newSize
+        # TODO: wipe the crypto footer.
         checkFs_ext4 $n $dev
         moveSize=$newSize
     fi
@@ -111,13 +118,14 @@ processPar_ext4_keep_wet() {
     if [ $(( newSize > oldSize )) -ne 0 ]; then
         info "enlarging the partition entry"
         processParRecreate $n $newStart $oldSize $newStart $newSize
+        # TODO: wipe the crypto footer.
         info "enlarging the ext4 file system"
-        resize2fs -f $dev ${newSize}s
+        resize2fs -f $dev ${newFsSize}s
         checkFs_ext4 $n $dev
     fi
     if [ $(( newSize == oldSize )) -ne 0 ]; then
-        info "enlarging the ext4 file system if needed to fill its partition"
-        resize2fs -f $dev ${newSize}s
+        info "resizing the ext4 file system if needed to fit its partition"
+        resize2fs -f $dev ${newFsSize}s
         checkFs_ext4 $n $dev
     fi
 }
