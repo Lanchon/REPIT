@@ -72,10 +72,10 @@ processPar_vfat_keep_dry() {
     local newStart=$5
     local newSize=$6
 
-    checkTool dosfsck
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
         info "will move/resize the vfat partition"
     fi
+    checkTool dosfsck
     checkFs_vfat $@
 
 }

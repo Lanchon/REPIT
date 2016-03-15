@@ -44,8 +44,9 @@ processPar_ext4_wipe_wet() {
 
     local footerSize=$(parFooterSize $n)
     local newFsSize=$(( newSize - footerSize ))
+
     processParRecreate $n $oldStart $oldSize $newStart $newSize
-    # TODO: wipe the crypto footer.
+    processParWipeCryptoFooter $n $newStart $newSize $footerSize
     info "formatting the partition in ext4 and trimming it"
     mke2fs -q -t ext4 -E discard $dev ${newFsSize}s
 
@@ -84,19 +85,20 @@ processPar_ext4_keep_dry() {
     local newStart=$5
     local newSize=$6
 
-    checkTool e2fsck
     if [ $(( newStart != oldStart )) -ne 0 ]; then
         info "will move the ext4 partition"
         warning "moving a big ext4 partition can take a very long time; it requires copying the complete partition, including its free space"
     fi
     if [ $(( newSize != oldSize )) -ne 0 ]; then
         info "will resize the ext4 partition"
-        checkTool resize2fs
+        #checkTool resize2fs
     fi
     if [ $(( newSize == oldSize )) -ne 0 ]; then
         info "will resize the ext4 file system if needed to fit its partition"
-        checkTool resize2fs
+        #checkTool resize2fs
     fi
+    checkTool e2fsck
+    checkTool resize2fs
     checkFs_ext4 $n $dev
 
 }
@@ -110,17 +112,18 @@ processPar_ext4_keep_wet() {
     local newStart=$5
     local newSize=$6
 
-    # note: REPIT should not be able to start on encrypted phones due to the block device being locked.
-
     local footerSize=$(parFooterSize $n)
     local newFsSize=$(( newSize - footerSize ))
+
+    # note: REPIT should not be able to start on encrypted phones due to the block device being locked.
+
     local moveSize=$oldSize
     if [ $(( newSize < oldSize )) -ne 0 ]; then
         info "shrinking the ext4 file system"
         resize2fs -f $dev ${newFsSize}s
         info "shrinking the partition entry"
         processParRecreate $n $oldStart $oldSize $oldStart $newSize
-        # TODO: wipe the crypto footer.
+        processParWipeCryptoFooter $n $oldStart $newSize $footerSize
         checkFs_ext4 $n $dev
         moveSize=$newSize
     fi
@@ -132,7 +135,7 @@ processPar_ext4_keep_wet() {
     if [ $(( newSize > oldSize )) -ne 0 ]; then
         info "enlarging the partition entry"
         processParRecreate $n $newStart $oldSize $newStart $newSize
-        # TODO: wipe the crypto footer.
+        processParWipeCryptoFooter $n $newStart $newSize $footerSize
         info "enlarging the ext4 file system"
         resize2fs -f $dev ${newFsSize}s
         checkFs_ext4 $n $dev

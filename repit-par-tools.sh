@@ -20,14 +20,12 @@ processParRecreate() {
     local newSize=$5
 
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
+
         info "deleting current partition"
         runParted rm $n
+
         info "creating new partition"
-        if runParted mkpart primary $newStart $(( newStart + newSize - 1 )); then
-            info "naming the partition"
-            runParted name $n $(parGet $n pname)
-            rereadParTable
-        else
+        if ! runParted mkpart primary $newStart $(( newStart + newSize - 1 )); then
             info "attempting to restore previous partition"
             runParted mkpart primary $oldStart $(( oldStart + oldSize - 1 ))
             info "naming the partition"
@@ -35,6 +33,35 @@ processParRecreate() {
             rereadParTable
             fatal "unable to create new partition (previous partition was successfully restored)"
         fi
+
+        info "naming the partition"
+        runParted name $n $(parGet $n pname)
+        rereadParTable
+
+    fi
+
+}
+
+processParWipeCryptoFooter() {
+
+    local n=$1
+    local start=$2
+    local size=$3
+    local footerSize=$4
+
+    if [ $(( footerSize != 0 )) -ne 0 ]; then
+
+        local footerStart=$(( start + size - footerSize ))
+
+        info "creating a temporary partition to wipe the crypto footer due to dd's 4 GiB wraparound bug"
+        processParRecreate $n $start $size $footerStart $footerSize
+
+        info "wiping the crypto footer"
+        dd if=/dev/zero of=${dpar}$n bs=$sectorSize count=$footerSize conv=noerror,sync
+
+        info "recreating the original partition"
+        processParRecreate $n 0 0 $start $size
+
     fi
 
 }
@@ -54,7 +81,7 @@ moveDataChunk() {
     #dd if=$ddev of=$tchunk bs=$sectorSize skip=$oldStart count=$size conv=noerror,sync
     #dd if=$tchunk of=$ddev bs=$sectorSize seek=$newStart count=$size conv=noerror,sync
 
-    info "creating temporary partition to read chunk at device offset $(printSizeMiB $oldStart)"
+    info "creating a temporary partition to read chunk at device offset $(printSizeMiB $oldStart)"
     runParted mkpart primary $oldStart $(( oldStart + size - 1 ))
     rereadParTable
     info "reading data"
@@ -62,7 +89,7 @@ moveDataChunk() {
     info "deleting the temporary partition"
     runParted rm $n
 
-    info "creating temporary partition to write chunk at device offset $(printSizeMiB $newStart)"
+    info "creating a temporary partition to write chunk at device offset $(printSizeMiB $newStart)"
     runParted mkpart primary $newStart $(( newStart + size - 1 ))
     rereadParTable
     info "writing data"
