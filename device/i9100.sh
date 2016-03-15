@@ -15,20 +15,6 @@ device_makeFilenameConfig="system=1.0-data=same-sdcard=max-preload=min+wipe"
 
 device_init() {
 
-    # the block device on which REPIT will operate (only one device is supported):
-
-    sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
-    spar=$sdev/mmcblk0p
-
-    ddev=/dev/block/mmcblk0
-    dpar=/dev/block/mmcblk0p
-
-    sectorSize=512      # in bytes
-
-}
-
-device_check() {
-
     checkTool getprop
 
     case ":$(getprop ro.product.device):$(getprop ro.build.product):" in
@@ -43,6 +29,16 @@ device_check() {
             fatal "this package is for '$deviceName' devices; this device is '$(getprop ro.product.device)'"
             ;;
     esac
+
+    # the block device on which REPIT will operate (only one device is supported):
+
+    sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+    spar=$sdev/mmcblk0p
+
+    ddev=/dev/block/mmcblk0
+    dpar=/dev/block/mmcblk0p
+
+    sectorSize=512      # in bytes
 
 }
 

@@ -307,8 +307,6 @@ init() {
     MiB=$((        1024 * 1024 / sectorSize ))      # 1 MiB in sectors
     GiB=$(( 1024 * 1024 * 1024 / sectorSize ))      # 1 GiB in sectors
     
-    device_check
-
     checkTools
     initPartitions
     parsePackageName "$packageName"
