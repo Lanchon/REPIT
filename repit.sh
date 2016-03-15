@@ -283,7 +283,7 @@ checkUnmount() {
     info "unmounting all partitions"
 
     local dev
-    for dev in $(grep -ow "^${dpar}[0-9]*" /proc/mounts | sort -u); do
+    for dev in $(grep -ow "^$unmountPattern" /proc/mounts | sort -u); do
         if ! umount $dev; then
             fatal "unable to unmount all partitions ($hint)"
         fi

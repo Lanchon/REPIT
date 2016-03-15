@@ -40,6 +40,15 @@ device_init() {
 
     sectorSize=512      # in bytes
 
+    # a grep pattern matching the partitions that must be unmounted before REPIT can start:
+
+    # unmounting the partitions of the selected block device seems to be enough:
+    #unmountPattern="${dpar}[0-9]\+"
+
+    # but we will unmount the external sdcard too (due to some reports that i was so far unable to reproduce):
+    #unmountPattern="/dev/block/mmcblk\(0\|1\)\(p[0-9]\+\)\?"
+    unmountPattern="/dev/block/mmcblk[^ ]*"
+
 }
 
 device_initPartitions() {
