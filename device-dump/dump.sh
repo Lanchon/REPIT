@@ -37,10 +37,6 @@ checkTool() {
     echo "        $(which "$1")"
 }
 
-checkTools_processParMove() {
-    checkTool dd
-}
-
 checkTools() {
 
     checkTool parted
@@ -51,8 +47,7 @@ checkTools() {
     checkTool readlink
     checkTool basename
     checkTool dirname
-
-    checkTools_processParMove
+    checkTool dd
 
     #checkTools_fs_ext4
     #checkTools_fs_vfat

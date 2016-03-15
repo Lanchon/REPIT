@@ -134,7 +134,3 @@ processParMove() {
     fi
 
 }
-
-checkTools_processParMove() {
-    checkTool dd
-}

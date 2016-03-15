@@ -77,7 +77,6 @@ processPar_ext4_keep_dry() {
     if [ $(( newStart != oldStart )) -ne 0 ]; then
         info "will move the ext4 partition"
         warning "moving a big ext4 partition can take a very long time; it requires copying the complete partition, including its free space"
-        checkTools_processParMove
     fi
     if [ $(( newSize != oldSize )) -ne 0 ]; then
         info "will resize the ext4 partition"
