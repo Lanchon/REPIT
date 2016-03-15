@@ -12,6 +12,7 @@
 ### ext4
 
 checkTools_fs_ext4() {
+    # only require tools if actually needed
     #checkTool mke2fs
     #checkTool e2fsck
     #checkTool resize2fs
@@ -19,34 +20,42 @@ checkTools_fs_ext4() {
 }
 
 processPar_ext4_wipe_dry() {
+
     local n=$1
     local dev=$2
     local oldStart=$3
     local oldSize=$4
     local newStart=$5
     local newSize=$6
+
     info "will format the partition in ext4 and trim it"
     checkTool mke2fs
+
 }
 
 processPar_ext4_wipe_wet() {
+
     local n=$1
     local dev=$2
     local oldStart=$3
     local oldSize=$4
     local newStart=$5
     local newSize=$6
+
     local footerSize=$(parFooterSize $n)
     local newFsSize=$(( newSize - footerSize ))
     processParRecreate $n $oldStart $oldSize $newStart $newSize
     # TODO: wipe the crypto footer.
     info "formatting the partition in ext4 and trimming it"
     mke2fs -q -t ext4 -E discard $dev ${newFsSize}s
+
 }
 
 checkFs_ext4() {
+
     local n=$1
     local dev=$2
+
     info "checking and trimming the file system"
     (set +e; e2fsck -fp -E discard $dev)
     case "$?" in
@@ -57,22 +66,24 @@ checkFs_ext4() {
             ;;
         2|3)
             info "file system errors in $(parName $n) were fixed, but a reboot is needed before continuing"
-            echo "REBOOT NEEDED: please reboot and retry the process to continue"
-            exit 1
+            fatal "REBOOT NEEDED: please reboot and retry the process to continue"
             ;;
         *)
             fatal "file system errors in $(parName $n) could not be automatically fixed (try running 'e2fsck -f $dev')"
             ;;
     esac    
+
 }
 
 processPar_ext4_keep_dry() {
+
     local n=$1
     local dev=$2
     local oldStart=$3
     local oldSize=$4
     local newStart=$5
     local newSize=$6
+
     checkTool e2fsck
     if [ $(( newStart != oldStart )) -ne 0 ]; then
         info "will move the ext4 partition"
@@ -87,19 +98,23 @@ processPar_ext4_keep_dry() {
         checkTool resize2fs
     fi
     checkFs_ext4 $n $dev
+
 }
 
 processPar_ext4_keep_wet() {
+
     local n=$1
     local dev=$2
     local oldStart=$3
     local oldSize=$4
     local newStart=$5
     local newSize=$6
+
+    # note: REPIT should not be able to start on encrypted phones due to the block device being locked.
+
     local footerSize=$(parFooterSize $n)
     local newFsSize=$(( newSize - footerSize ))
     local moveSize=$oldSize
-    # note: REPIT should not be able to start on encrypted phones due to the block device being locked.
     if [ $(( newSize < oldSize )) -ne 0 ]; then
         info "shrinking the ext4 file system"
         resize2fs -f $dev ${newFsSize}s
@@ -127,4 +142,5 @@ processPar_ext4_keep_wet() {
         resize2fs -f $dev ${newFsSize}s
         checkFs_ext4 $n $dev
     fi
+
 }

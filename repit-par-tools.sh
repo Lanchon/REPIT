@@ -12,11 +12,13 @@
 ### recreate partition
 
 processParRecreate() {
+
     local n=$1
     local oldStart=$2
     local oldSize=$3
     local newStart=$4
     local newSize=$5
+
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
         info "deleting current partition"
         runParted rm $n
@@ -34,19 +36,24 @@ processParRecreate() {
             fatal "unable to create new partition (previous partition was successfully restored)"
         fi
     fi
+
 }
 
 ### move partition
 
 moveDataChunk() {
+
     local n=$1
     local oldStart=$2
     local newStart=$3
     local size=$4
+
     echo "-----  moving $(printSizeMiB $size) chunk: $(printSizeMiB $oldStart) -> $(printSizeMiB $newStart)"
+
     # WARNING: dd has a dangerous 4 GiB wraparound bug!!!
     #dd if=$ddev of=$tchunk bs=$sectorSize skip=$oldStart count=$size conv=noerror,sync
     #dd if=$tchunk of=$ddev bs=$sectorSize seek=$newStart count=$size conv=noerror,sync
+
     info "creating temporary partition to read chunk at device offset $(printSizeMiB $oldStart)"
     runParted mkpart primary $oldStart $(( $oldStart + $size - 1 ))
     rereadParTable
@@ -54,6 +61,7 @@ moveDataChunk() {
     dd if=${dpar}$n of=$tchunk bs=$sectorSize conv=noerror,sync
     info "deleting the temporary partition"
     runParted rm $n
+
     info "creating temporary partition to write chunk at device offset $(printSizeMiB $newStart)"
     runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
     rereadParTable
@@ -61,19 +69,25 @@ moveDataChunk() {
     dd if=$tchunk of=${dpar}$n bs=$sectorSize conv=noerror,sync
     info "deleting the temporary partition"
     runParted rm $n
+
     #rereadParTable
     rm -f $tchunk
+
     echo
+
 }
 
 moveData() {
+
     local pn=$1
     local oldStart=$2
     local newStart=$3
     local size=$4
+
     local chunk=$moveDataChunkSize
     local n
     local m
+
     if [ $(( newStart < oldStart )) -ne 0 ]; then
         info "moving data towards the beginning of the disk"
         echo
@@ -84,6 +98,7 @@ moveData() {
         done
         moveDataChunk $pn $(( oldStart + m )) $(( newStart + m )) $(( size - m ))
     fi
+
     if [ $(( newStart > oldStart )) -ne 0 ]; then
         info "moving data towards the end of the disk"
         echo
@@ -94,6 +109,7 @@ moveData() {
         done
         moveDataChunk $pn $oldStart $newStart $m
     fi
+
 }
 
 processParMove() {
@@ -115,11 +131,14 @@ processParMove() {
 
         info "ensure that the destination partition can be created before starting the move"
         processParRecreate $n $oldStart $size $newStart $size
-        #info "ensure no access if move is interrupted by deleting the partition"
+
+        #info "deleting the partition to ensure no access to partially moved data if move is interrupted"
         info "deleting the partition to workaround dd's 4 GiB wraparound bug"
         runParted rm $n
         #rereadParTable
+
         moveData $n $oldStart $newStart $size
+
         #info "recreating the partition"
         info "creating the final partition"
         runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
