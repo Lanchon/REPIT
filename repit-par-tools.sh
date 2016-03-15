@@ -23,13 +23,13 @@ processParRecreate() {
         info "deleting current partition"
         runParted rm $n
         info "creating new partition"
-        if runParted mkpart primary $newStart $(( $newStart + $newSize - 1 )); then
+        if runParted mkpart primary $newStart $(( newStart + newSize - 1 )); then
             info "naming the partition"
             runParted name $n $(parGet $n pname)
             rereadParTable
         else
             info "attempting to restore previous partition"
-            runParted mkpart primary $oldStart $(( $oldStart + $oldSize - 1 ))
+            runParted mkpart primary $oldStart $(( oldStart + oldSize - 1 ))
             info "naming the partition"
             runParted name $n $(parGet $n pname)
             rereadParTable
@@ -55,7 +55,7 @@ moveDataChunk() {
     #dd if=$tchunk of=$ddev bs=$sectorSize seek=$newStart count=$size conv=noerror,sync
 
     info "creating temporary partition to read chunk at device offset $(printSizeMiB $oldStart)"
-    runParted mkpart primary $oldStart $(( $oldStart + $size - 1 ))
+    runParted mkpart primary $oldStart $(( oldStart + size - 1 ))
     rereadParTable
     info "reading data"
     dd if=${dpar}$n of=$tchunk bs=$sectorSize conv=noerror,sync
@@ -63,7 +63,7 @@ moveDataChunk() {
     runParted rm $n
 
     info "creating temporary partition to write chunk at device offset $(printSizeMiB $newStart)"
-    runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
+    runParted mkpart primary $newStart $(( newStart + size - 1 ))
     rereadParTable
     info "writing data"
     dd if=$tchunk of=${dpar}$n bs=$sectorSize conv=noerror,sync
@@ -94,7 +94,7 @@ moveData() {
         m=0
         for n in $(seq -- 0 $chunk $(( size - chunk - 1 )) ); do
             moveDataChunk $pn $(( oldStart + n )) $(( newStart + n )) $chunk
-            m=$(( $n + chunk ))
+            m=$(( n + chunk ))
         done
         moveDataChunk $pn $(( oldStart + m )) $(( newStart + m )) $(( size - m ))
     fi
@@ -126,7 +126,7 @@ processParMove() {
 #md5sum ${dpar}$n
 
         # this does not work (so we manually dd data around instead)
-        #runParted move $n $newStart $(( $newStart + $size - 1 ))
+        #runParted move $n $newStart $(( newStart + size - 1 ))
         #rereadParTable
 
         info "ensure that the destination partition can be created before starting the move"
@@ -141,7 +141,7 @@ processParMove() {
 
         #info "recreating the partition"
         info "creating the final partition"
-        runParted mkpart primary $newStart $(( $newStart + $size - 1 ))
+        runParted mkpart primary $newStart $(( newStart + size - 1 ))
         info "naming the partition"
         runParted name $n $(parGet $n pname)
         rereadParTable

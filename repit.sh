@@ -361,7 +361,7 @@ setup() {
         fi
     done
     
-    for n in $(seq $(( $partitionCount + 1 )) $(( $partitionCount + 100 )) ); do
+    for n in $(seq $(( partitionCount + 1 )) $(( partitionCount + 100 )) ); do
         if [ -e ${spar}$n ]; then
             fatal "partition #$n: unexpected"
         fi

@@ -91,7 +91,7 @@ processPar_vfat_keep_wet() {
 
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
         info "moving/resizing the vfat partition"
-        runParted resize $n $newStart $(( $newStart + $newSize - 1 ))
+        runParted resize $n $newStart $(( newStart + newSize - 1 ))
         rereadParTable
         checkFs_vfat $@
     fi
