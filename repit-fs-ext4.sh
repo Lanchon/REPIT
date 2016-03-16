@@ -67,7 +67,7 @@ checkFs_ext4() {
             ;;
         2|3)
             info "file system errors in $(parName $n) were fixed, but a reboot is needed before continuing"
-            fatal "REBOOT NEEDED: please reboot and retry the process to continue"
+            fatal "reboot needed: please reboot and retry the process to continue"
             ;;
         *)
             fatal "file system errors in $(parName $n) could not be automatically fixed (try running 'e2fsck -f $dev')"
@@ -128,7 +128,7 @@ processPar_ext4_keep_wet() {
         moveSize=$newSize
     fi
     if [ $(( newStart != oldStart )) -ne 0 ]; then
-        info "moving the partition"
+        info "moving the ext4 partition"
         processParMove $n $oldStart $newStart $moveSize
         checkFs_ext4 $n $dev
     fi
