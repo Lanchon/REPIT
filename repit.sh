@@ -154,6 +154,7 @@ checkTools() {
 
     checkTools_fs_ext4
     checkTools_fs_vfat
+    checkTools_fs_raw
 
 }
 
@@ -210,7 +211,7 @@ parsePartitionConfiguration() {
 
     if [ -n "$conf" ]; then
 
-        local regex="^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\)\)\?\)\?$"
+        local regex="^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\|raw\)\)\?\)\?$"
 
         if [ -n "$(echo -n "$conf" | sed "s/$regex//")" ]; then
             fatal "invalid partition configuration for '$parName': $parName=$conf"
@@ -241,7 +242,7 @@ parsePackageName() {
         parNames="$parNames$(parGet $n fname)"
     done
     info "valid package names: <prefix>[-($parNames)=<conf>]...<suffix>"
-    info "valid partition <conf> values: [<size-in-GiB>|same|min|max][+[keep|wipe][+[ext4|vfat]]]"
+    info "valid partition <conf> values: [<size-in-GiB>|same|min|max][+[keep|wipe][+[ext4|vfat|raw]]]"
 
     echo
     echo "-----  DEFAULTS  -----"
@@ -466,6 +467,8 @@ setupHeapPartition() {
         ext4)
             ;;
         vfat)
+            ;;
+        raw)
             ;;
         *)
             fatal "$(parName $n): invalid file system type"

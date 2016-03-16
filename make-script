@@ -22,6 +22,8 @@ rm -f "$out"
 >>"$out" echo
 >>"$out" cat repit-fs-vfat.sh
 >>"$out" echo
+>>"$out" cat repit-fs-raw.sh
+>>"$out" echo
 >>"$out" cat "$deviceScript"
 >>"$out" echo
 >>"$out" echo "#####################################################"
