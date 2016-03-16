@@ -210,16 +210,18 @@ parsePartitionConfiguration() {
 
     if [ -n "$conf" ]; then
 
-        if [ -n "$(echo -n "$conf" | sed "s/^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\)\)\?\)\?$//")" ]; then
+        local regex="^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\)\)\?\)\?$"
+
+        if [ -n "$(echo -n "$conf" | sed "s/$regex//")" ]; then
             fatal "invalid partition configuration for '$parName': $parName=$conf"
         fi
 
         local val
-        val="$(echo -n "$conf" | sed -n "s/^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\)\)\?\)\?$/\1/p")"
+        val="$(echo -n "$conf" | sed -n "s/$regex/\1/p")"
         if [ -n "$val" ]; then $(parSet $n parsedSize "$val"); fi
-        val="$(echo -n "$conf" | sed -n "s/^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\)\)\?\)\?$/\3/p")"
+        val="$(echo -n "$conf" | sed -n "s/$regex/\3/p")"
         if [ -n "$val" ]; then $(parSet $n parsedContent "$val"); fi
-        val="$(echo -n "$conf" | sed -n "s/^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\)\)\?\)\?$/\5/p")"
+        val="$(echo -n "$conf" | sed -n "s/$regex/\5/p")"
         if [ -n "$val" ]; then $(parSet $n parsedFs "$val"); fi
 
     fi
