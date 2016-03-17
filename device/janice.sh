@@ -78,7 +78,8 @@ device_init() {
 
     # the block device on which REPIT will operate (only one device is supported):
 
-    sdev=/sys/devices/sdi2/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+    #sdev=/sys/devices/sdi2/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+    sdev=/sys/block/mmcblk0
     spar=$sdev/mmcblk0p
 
     ddev=/dev/block/mmcblk0
