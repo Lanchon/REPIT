@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+unsignedZip="zip/repit-dump-unsigned.zip"
+signedZip="zip/repit-dump.zip"
+
+mkdir -p zip
+
+rm -f "$unsignedZip"
+rm -f "$signedZip"
+
+flashize dump.sh "$unsignedZip"
+signapk -w ../key/testkey.x509.pem ../key/testkey.pk8 "$unsignedZip" "$signedZip"
+
+rm "$unsignedZip"
