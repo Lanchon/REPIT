@@ -284,6 +284,14 @@ parsePackageName() {
 
 }
 
+disableSwap() {
+    #info "checking tool: swapoff"
+    if [ -n "$(which swapoff)" ]; then
+        info "disabling swap"
+        swapoff -a
+    fi
+}
+
 checkUnmount() {
 
     local packageName="$1"
@@ -338,6 +346,7 @@ init() {
     checkTools
     initPartitions
     parsePackageName "$packageName"
+    disableSwap
     checkUnmount "$packageName"
 
 }
