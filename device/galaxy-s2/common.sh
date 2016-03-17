@@ -19,7 +19,11 @@ device_init() {
 
     # the block device on which REPIT will operate (only one device is supported):
 
-    sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+    # exynos 4210:
+    #sdev=/sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+    # omap 4430:
+    #sdev=/sys/devices/platform/omap/omap_hsmmc.1/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+    sdev=/sys/block/mmcblk0
     spar=$sdev/mmcblk0p
 
     ddev=/dev/block/mmcblk0
