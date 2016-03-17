@@ -112,12 +112,14 @@ device_setupHeap_main() {
     # all partition manipulation works exclusively within a heap.
 
     # the set of contiguous partitions that form this heap, in order of ascending partition start address:
+    #heapPartitions="$(seq 7 12)"
     heapPartitions="$(seq 9 12)"
 
     # the disk area (as a sector range) to use for the heap partitions:
     # (the sector range is from heapStart to heapEnd-1 inclusive.)
 
     #heapStart=$deviceHeapStart     # the first usable sector of the device
+    #heapStart=$(parOldEnd 6)       # or one past the end of a specific partition
     heapStart=$(parOldEnd 8)        # or one past the end of a specific partition
     #heapStart=344064               # or a fixed sector number
 
