@@ -51,6 +51,7 @@ checkTools() {
 
     #checkTools_fs_ext4
     #checkTools_fs_vfat
+    #checkTools_fs_raw
 
 }
 
@@ -65,14 +66,20 @@ checkTools_fs_vfat() {
     checkTool dosfsck
 }
 
+checkTools_fs_raw() {
+    :
+}
+
 run checkTools
 
 run checkTools_fs_ext4
 run checkTools_fs_vfat
+run checkTools_fs_raw
 
 run ls -lR /sbin
 
 run ls -l /dev/block
+run ls -l /sys/block
 
 run_fdisk() {
     echo p | fdisk -u $1
@@ -84,7 +91,7 @@ for device in /dev/block/*; do
 done
 
 run ls -lR /dev/block
-run ls -lR /sys/devices/platform/*mmc*
+run ls -lR /sys/block
 
 run ls -lR /dev
 run ls -lR /sys
