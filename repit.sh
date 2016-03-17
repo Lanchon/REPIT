@@ -140,6 +140,19 @@ parName() {
 
 ### initialization
 
+detectSideload() {
+
+    local packageName="$1"
+
+    # /tmp/update.zip: old sideload protocol
+    # /sideload/package.zip: current sideload-host protocol
+    if [ "$1" == "/tmp/update.zip" ] || [ "$1" == "/sideload/package.zip" ]; then
+        fatal "adb sideload is not supported (it hides the package filename and thus filename-based configuration does not work; "\
+"please adb push the package to /tmp instead and run it from there)"
+    fi
+
+}
+
 checkTools() {
 
     checkTool parted
@@ -304,19 +317,6 @@ checkUnmount() {
 
     # rereadParTable requires everything unmounted
     rereadParTable " ($hint)"
-
-}
-
-detectSideload() {
-
-    local packageName="$1"
-
-    # /tmp/update.zip: old sideload protocol
-    # /sideload/package.zip: current sideload-host protocol
-    if [ "$1" == "/tmp/update.zip" ] || [ "$1" == "/sideload/package.zip" ]; then
-        fatal "adb sideload is not supported (it hides the package filename and thus filename-based configuration does not work; "\
-"please adb push the package to /tmp instead and run it from there)"
-    fi
 
 }
 
