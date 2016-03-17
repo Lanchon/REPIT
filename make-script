@@ -2,32 +2,60 @@
 
 set -e
 
-device="$1"
+catCommonScripts() {
 
-deviceScript="device/$device.sh"
-out="build/lanchon-repit-$device.sh"
+    local dir="$(dirname "$1")"
 
-if [ ! -e "$deviceScript" ]; then
-    >&2 echo "device not found: '$device'"
-    exit 1
-fi
+    if [ "$dir" != "." ]; then
 
-rm -f "$out"
+        catCommonScripts "$dir"
 
->>"$out" cat repit.sh
->>"$out" echo
->>"$out" cat repit-par-tools.sh
->>"$out" echo
->>"$out" cat repit-fs-ext4.sh
->>"$out" echo
->>"$out" cat repit-fs-vfat.sh
->>"$out" echo
->>"$out" cat repit-fs-raw.sh
->>"$out" echo
->>"$out" cat "$deviceScript"
->>"$out" echo
->>"$out" echo "#####################################################"
->>"$out" echo
->>"$out" echo "deviceName='$device'"
->>"$out" echo
->>"$out" echo 'main "$@"'
+        local commonScript="$dir/common.sh"
+        if [ -f "$commonScript" ]; then
+            >>"$out" cat "$commonScript"
+            >>"$out" echo
+        fi
+
+    fi
+
+}
+
+makeScript() {
+
+    device="$1"
+
+    deviceScript="$(find device -name "$device.sh")"
+    out="build/lanchon-repit-$device.sh"
+
+    if [ "$device" == "common" ] || [ ! -f "$deviceScript" ]; then
+        >&2 echo "error: invalid device: '$device'"
+        exit 1
+    fi
+
+    rm -f "$out"
+
+    >>"$out" cat repit.sh
+    >>"$out" echo
+    >>"$out" cat repit-par-tools.sh
+    >>"$out" echo
+
+    >>"$out" cat repit-fs-ext4.sh
+    >>"$out" echo
+    >>"$out" cat repit-fs-vfat.sh
+    >>"$out" echo
+    >>"$out" cat repit-fs-raw.sh
+    >>"$out" echo
+
+    catCommonScripts "$deviceScript"
+    >>"$out" cat "$deviceScript"
+    >>"$out" echo
+
+    >>"$out" echo "#####################################################"
+    >>"$out" echo
+    >>"$out" echo "deviceName='$device'"
+    >>"$out" echo
+    >>"$out" echo 'main "$@"'
+
+}
+
+makeScript "$@"

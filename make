@@ -6,25 +6,25 @@ makeZip() {
 
     local device="$1"
 
-    echo "Device: $device"
+    echo "device: $device"
 
     ./make-script "$device"
     script="build/lanchon-repit-$device.sh"
 
     makeFilenameConfig="$(sed -n "s/^device_makeFilenameConfig=\"\(.*\)\"$/\1/p" "$script")"
     if [ -z "$makeFilenameConfig" ]; then
-        >&2 echo "value not found: 'makeFilenameConfig'"
+        >&2 echo "error: value not found: 'makeFilenameConfig'"
         exit 1
     fi
 
-    unsigned="build/lanchon-repit-unsigned-$device.zip"
-    signed="build/lanchon-repit-$versionShort-$makeFilenameConfig-$device.zip"
+    unsignedZip="build/lanchon-repit-unsigned-$device.zip"
+    signedZip="build/lanchon-repit-$versionShort-$makeFilenameConfig-$device.zip"
 
-    flashize "$script" "$unsigned"
-    signapk -w key/testkey.x509.pem key/testkey.pk8 "$unsigned" "$signed"
+    flashize "$script" "$unsignedZip"
+    signapk -w key/testkey.x509.pem key/testkey.pk8 "$unsignedZip" "$signedZip"
 
     #rm "$script"
-    rm "$unsigned"
+    rm "$unsignedZip"
 
 }
 
@@ -34,25 +34,32 @@ make() {
 
     versionLong="$(sed -n "s/^version=\"\(.*\)\"$/\1/p" repit.sh)"
     if [ -z "$versionLong" ]; then
-        >&2 echo "value not found: 'version'"
+        >&2 echo "error: value not found: 'version'"
         exit 1
     fi
-
     versionShort="$(echo "$versionLong" | sed "s/-//g")"
 
-    echo "Version: $versionLong"
+    echo "version: $versionLong"
 
     mkdir -p build
     if [ -z "$device" ]; then
+
         rm -f build/lanchon-repit*
-        for f in device/*.sh; do
-            makeZip "$(basename "$f" .sh)"
+        local f
+        for f in $(find device -name "*.sh"); do
+            local d="$(basename "$f" .sh)"
+            if [ "$d" != "common" ]; then
+                makeZip "$d"
+            fi
         done
+
     else
+
         rm -f build/lanchon-repit*-"$device".*
         makeZip "$device"
+
     fi
 
 }
 
-make "$1"
+make "$@"
