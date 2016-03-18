@@ -1,44 +1,46 @@
 ## Lanchon REPIT
-### A Data-Sparing Repartitioning Tool for the Galaxy S2 i9100
+### A Device-Only Data-Sparing Repartitioning Tool for Android
 
-Powered by [Flashize]
-(http://forum.xda-developers.com/android/software-hacking/tool-flashize-shell-scripts-flashable-t3313605).
+Powered by [Flashize](http://forum.xda-developers.com/android/software-hacking/tool-flashize-shell-scripts-flashable-t3313605).
 
-> **IMPORTANT NOTE:** this script will not work if your phone is encrypted. you need to decrypt your phone first.
-this was found and reported by XDA user **jer194** [here]
-(http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65307128).
-if you run the script on an encrypted phone anyway, no damage will come: it will just refuse to start,
-complaining that it cannot reread the partition table.
+#### WHAT IS THE PROBLEM ?
 
-#### IF... your stock-partitioned device cannot flash gapps after updating to CM 13.0
+many older devices, especially the ones originally released before emulated storage was available, were partitioned by the OEM in ways that hinder the installation and use of newer Android versions. for example, the Galaxy S2 GT-I9100 comes with a 0.5 GB /system partition that is unable to fit CM 13.0 and Open GApps, even if you choose the pico version. though its flash is typically a generous 16 GB, the stock /data partition is only 2 GB which means that with today's ART you run out of space to install applications in no time. it also comes with a 0.5 GB /preload partition that goes unused on custom ROMs.
 
-download and flash the file as it is. it will get most space from the unused /preload partition and only 8MB for
-the internal sdcard, and then make /system 1GB in size. it will keep you current /data size constant, whatever it is.
-it will retain all data except data in /preload, which is unused in custom roms (but some multi-boot setups use it).
+people have typically solved this by repartitioning. on Samsung devices this is a tricky process that involves the use of download mode, a Windows PC, Windows device drivers that support the device's download mode, a 'pirated' proprietary PC software called Odin, the right PIT and other files, and correct configuration. (a free software alternative to Odin called Heimdall works on many devices and is cross platform and supports Linux PCs, but the rest of the hurdles remain.) the procedure has potential for hard-bricking if the wrong files are flashed. after repartitioning, all affected partitions must be reflashed or formatted anew, a procedure that many get wrong. and of course, all data in the affected partitions gets wiped (typically the complete device) making this an ultra-inconvenient affair.
 
-#### IF... your device is usable
+#### WHAT IS REPIT ?
 
-you can nonetheless use this script to do general repartitioning, file system fixing, wiping, and/or file system
-type changes. download the script, rename it to express your desired configuration (see below), and then flash it.
+REPIT is simple, safe, device-only, data-sparing, and easily portable repartitioning tool for Android devices:
 
-#### HOW TO
+- device-only: just flash a zip file in recovery to repartition the device.
+- simple: rename the zip file before flashing to configure your choice of partition sizes, file systems, wipes, etc.
+- safe:
+  - a correctly ported REPIT can never hard-brick your device.
+  - before starting, REPIT checks for the existence of all the tools that will be needed for the task at hand, verifies that the current partition layout passes several sanity checks, checks and fixes all the involved file systems, and verifies that the new partition layout will meet its sanity checks too. REPIT performs a dry-run of the complete repartitioning process to detect possible problems early on.
+  - if REPIT fails, it will nonetheless try to restore your device to a working in-between state. you can solve the blocking issue and REPIT again towards your goal, or otherwise REPIT back to your original configuration. (keeping the in-between state is not recommended as it usually involves 'wasted' unpartitioned space.)
+  - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported.
+- easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
 
-1. get [my latest IsoRec TWRP]
-(http://forum.xda-developers.com/galaxy-s2/orig-development/isorec-isolated-recovery-galaxy-s2-t3291176)
-(by arnab) running.
-2. make sure your battery is mostly charged.
-3. get the zip from the link below.
-4. if needed, **rename it to express your desired configuration** (see below).
-5. **PLUG INTO A POWER SOURCE.** this operation might take a long time and **must not be interrupted.**
-6. flash the zip locally on the phone. (do not sideload it: sideloading conceals the filename from the device.)
+Limitations:
+
+- REPIT **does not support encrypted phones.**
+- REPIT requires **a lot** of support from the recovery environment in the form of tools. typically only recent TWRP 2.8.7.* recoveries are up to the task. (the newer TWRP 3 builds i have seen lack some of the required tools.) REPIT's makefile uses Flashize to convert each device-specific REPIT shell script to its final flashable form. the planned solution to this limitation of recovery-dependence is to make a version of Flashize that bundles not only the client script but a complete userland environment.
+- REPIT **will cause data loss** if the repartitioning process is externally interrupted. **plug into a power source!**
+
+#### HOW TO REPIT
+
+1. if you think your data is invaluable then treat it as such: **make a backup!**
+2. get a recent TWRP 2.8.7.* running on your device.
+3. make sure your battery is mostly charged.
+4. get the zip for your device from the link below.
+5. **rename it to express your desired configuration** (see below).
+6. **PLUG INTO A POWER SOURCE.** this operation might take a long time and **must not be interrupted.**
+7. flash the zip locally on the phone. (do not sideload it: sideloading conceals the filename from the device.)
 
 in case the script fails to start:
-- if the script cannot unmount all partitions, it will copy itself to the /tmp directory and ask you to flash it
-  a second time from there.
-- if it still fails to unmount all partitions, or if it fails to lock the eMMC with error 'unable to reread the
-  partition table', then you need to reboot TWRP and reflash the script immediately after boot up. (you may
-  actually need to reflash twice, the second time from '/tmp'.) do not do anything after boot up and before
-  flashing! in particular, **do not mount the sdcard as USB mass storage.**
+- if the script cannot unmount all partitions, it will copy itself to the /tmp directory and ask you to flash it a second time from there.
+- if it still fails to unmount all partitions, or if it fails to lock the eMMC ('unable to reread the partition table'), then you need to reboot TWRP and reflash the script immediately after boot up. (you may actually need to reflash twice, the second time from '/tmp'.) do not do anything after boot up and before flashing! in particular, **do not mount the sdcard as USB mass storage.**
 - if locking issues remain, your phone is probably encrypted; this script is not compatible with encrypted phones.
 
 finally, go get a coffee or two. **do not, under any circumstance, interrupt this script !!!**
@@ -47,23 +49,62 @@ finally, go get a coffee or two. **do not, under any circumstance, interrupt thi
 
 configure the script by renaming the zip file before flashing it.
 
-valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
+valid zip names: `<prefix>[-partition1=<conf>][-partition2=<conf>]...<suffix>`
 
-valid partition `<conf>` values: `[<size-in-GiB>|same|min|max][+[keep|wipe][+[ext4|vfat]]]`
+valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat|raw]]]`
+
+the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see the i9100 section below.
 
 ##### Sizes
-- `same`: do not alter the size of this partition
-- `min`: make this partition 8 MiB in size (useful for 'preload', which is unused in custom roms)
-- `max`: make this partition as big as possible (at most one partition can have its size set to 'max')
-- `<size-in-GiB>`: fractional number expressing the new partition size in GiB (gets rounded to the nearest MiB)
+- `same`: do not alter the size of this partition.
+- `min`: make this unused partition a minimum yet formattable size (typically 8 MiB, but device-dependent).
+- `max`: make this partition as big as possible (at most one partition per 'heap' can have its size set to 'max').
+- `<size>`: fractional number expressing the desired partition size (typically in GiB, but device-dependent). this value gets rounded to the nearest acceptable discreet value. the size granularity is device-dependent, but typically set to match the device-dependent alignment size, which typically is 1 or 4 MiB.
 
-##### Defaults
+#### IN CASE OF ISSUES
+
+if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. otherwise, make sure to somehow record the log. you can easily [obtain a copy of the log](http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
+
+> **PLEASE NOTE:** your _'did not work'_ report is useless unless you post info from your log.
+
+#### DOWNLOADS
+
+https://www.androidfilehost.com/?w=files&flid=49911
+
+#### CHANGELOG
+
+https://github.com/Lanchon/REPIT/releases
+
+
+### Galaxy S2 GT-I9100 Support
+
+REPIT started its life as i9100-only tool and it inherits this doc section from the good old days.
+
+> **IMPORTANT NOTE:** this script will not work if your phone is encrypted. you need to decrypt your phone first. this was found and reported by XDA user **jer194** [here] (http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65307128). if you run the script on an encrypted phone anyway, no damage will come: it will just refuse to start, complaining that it cannot reread the partition table.
+
+#### IF... your stock-partitioned device cannot flash gapps after updating to CM 13.0
+
+download and flash the file as it is. it will get most space from the unused /preload partition and only 8MB for the internal sdcard, and then make /system 1GB in size. it will keep you current /data size constant, whatever it is. it will retain all data except data in /preload, which is unused in custom roms (but some multi-boot setups use it).
+
+#### IF... your device is usable
+
+you can nonetheless use this script to do general repartitioning, file system fixing, wiping, and/or file system type changes. download the script, rename it to express your desired configuration (see below), and then flash it.
+
+#### GT-I9100 HOW TO
+
+first get [my IsoRec TWRP 2.8.7.0](http://forum.xda-developers.com/galaxy-s2/orig-development/isorec-isolated-recovery-galaxy-s2-t3291176) (by arnab) running on your device, then follow the generic how-to.
+
+valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
+
+sizes are expressed in GiB and get rounded to the nearest 4 MiB boundary.
+
+##### GT-I9100 Defaults
 - `-system=same+keep+ext4`
 - `-data=same+keep+ext4`
 - `-sdcard=same+keep+vfat` <-- note `vfat` here
 - `-preload=same+keep+ext4`
 
-##### Samples
+##### GT-I9100 Samples
 - repartition to stock, wiping preload (in case you used a very small preload before):
   <br>(**note:** in general it is not recommended to resize file systems by large factors.)
   <br>`lanchon-repit-XXXXXXXX-system=0.5-data=2-sdcard=max-preload=0.5+wipe-i9100.zip`
@@ -82,29 +123,10 @@ valid partition `<conf>` values: `[<size-in-GiB>|same|min|max][+[keep|wipe][+[ex
     <br>(**note:** wiping data is much faster than moving it around if system is being resized and data is large.)
     <br>`-system=1-data=6+wipe-sdcard=max-preload=min+wipe`
 
-#### IN CASE OF ISSUES
-
-if there are any problems, **read the log!** you can scroll it. most likely it will tell you want is wrong and what
-to do about it. otherwise, make sure to somehow record the log. take a picture of it at least; you can see a
-full screen log by hitting the back button once, then the center button at the bottom of the screen that looks
-like a TV screen. afterwards, you can try reflashing the script if you understand what happened and flashing it
-again makes sense.
-
-> **PLEASE NOTE:** i am not interested in your _'did not work'_ report unless you post info from your log.
-if you cannot post any info from the log, then please just do not post at all. thank you.
-
-#### DOWNLOADS
-
-https://www.androidfilehost.com/?w=files&flid=49911
-
-#### CHANGELOG
-
-https://github.com/Lanchon/REPIT/releases
 
 #### DISCLAIMER
 
-i believe this software to be very safe and i exercised it a lot before posting it. but i accept no responsibility
-if your data is lost or your device is bricked.
+i believe this software to be very safe and i exercised it a lot before posting it. but i accept no responsibility if your data is lost or your device is bricked.
 
 <br>
 
