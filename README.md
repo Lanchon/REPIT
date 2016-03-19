@@ -1,7 +1,7 @@
 ## Lanchon REPIT
 ### A Device-Only Data-Sparing Repartitioning Tool for Android
 
-Powered by [Flashize](http://forum.xda-developers.com/android/software-hacking/tool-flashize-shell-scripts-flashable-t3313605).
+Powered by [Flashize](https://github.com/Lanchon/Flashize).
 
 #### WHAT IS THE PROBLEM ?
 
