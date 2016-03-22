@@ -1,10 +1,11 @@
 ## Lanchon REPIT
 ### A Device-Only Data-Sparing Repartitioning Tool For Android
 
-#### [CHANGELOG] - [DOWNLOADS]
+#### [CHANGELOG] - [DOWNLOADS] - [GALAXY S2]
 
 [CHANGELOG]: https://github.com/Lanchon/REPIT/releases
 [DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
+[GALAXY S2]: https://github.com/Lanchon/REPIT#galaxy-s2-support
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
 
@@ -76,7 +77,7 @@ if there are any problems, **read the log!** you can scroll it on TWRP. most lik
 
 <br>
 
-## Galaxy S2 GT-I9100 Support
+## Galaxy S2 Support
 
 REPIT started its life as i9100-only tool and it inherits this doc section from the good old days.
 
@@ -90,21 +91,21 @@ download and flash the file as it is. it will get most space from the unused /pr
 
 you can nonetheless use this script to do general repartitioning, file system fixing, wiping, and/or file system type changes. download the script, rename it to express your desired configuration (see below), and then flash it.
 
-#### GT-I9100 HOW TO
+#### Galaxy S2 HOW TO
 
-first get [my IsoRec TWRP 2.8.7.0] (http://forum.xda-developers.com/galaxy-s2/orig-development/isorec-isolated-recovery-galaxy-s2-t3291176) (by arnab) running on your device, then follow the generic how-to.
+first get [IsoRec TWRP 2.8.7.0] (http://forum.xda-developers.com/galaxy-s2/orig-development/isorec-isolated-recovery-galaxy-s2-t3291176) running on your device, then follow the generic how-to.
 
 valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
 
 sizes are expressed in GiB and get rounded to the nearest 4 MiB boundary.
 
-##### GT-I9100 Defaults
+##### Galaxy S2 Defaults
 - `-system=same+keep+ext4`
 - `-data=same+keep+ext4`
 - `-sdcard=same+keep+vfat` <-- note `vfat` here
 - `-preload=same+keep+ext4`
 
-##### GT-I9100 Samples
+##### Galaxy S2 Samples
 - repartition to stock, wiping preload (in case you used a very small preload before):
   <br>(**note:** in general it is not recommended to resize file systems by large factors.)
   <br>`lanchon-repit-XXXXXXXX-system=0.5-data=2-sdcard=max-preload=0.5+wipe-i9100.zip`
