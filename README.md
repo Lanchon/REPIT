@@ -9,8 +9,6 @@
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
 
-<br>
-
 #### WHAT IS THE PROBLEM ?
 
 many older devices, especially the ones originally released before emulated storage was available, were partitioned by the OEM in ways that hinder the installation and use of newer Android versions. for example, the Galaxy S2 GT-I9100 comes with a 0.5 GB /system partition that is unable to fit CM 13.0 and Open GApps, even if you choose the pico version. though its flash is typically a generous 16 GB, the stock /data partition is only 2 GB which means that with today's ART you run out of space to install applications in no time. it also comes with a 0.5 GB /preload partition that goes unused on custom ROMs.
