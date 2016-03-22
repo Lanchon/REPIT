@@ -1,7 +1,14 @@
 ## Lanchon REPIT
-### A Device-Only Data-Sparing Repartitioning Tool for Android
+### A Device-Only Data-Sparing Repartitioning Tool For Android
 
-Powered by [Flashize](https://github.com/Lanchon/Flashize).
+#### [CHANGELOG] - [DOWNLOADS]
+
+[CHANGELOG]: https://github.com/Lanchon/REPIT/releases
+[DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
+
+Powered by [Flashize] (https://github.com/Lanchon/Flashize).
+
+<br>
 
 #### WHAT IS THE PROBLEM ?
 
@@ -22,7 +29,7 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
   - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported.
 - easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
 
-Limitations:
+#### LIMITATIONS
 
 - REPIT **does not support encrypted phones.**
 - REPIT requires **a lot** of support from the recovery environment in the form of tools. typically only recent TWRP 2.8.7.* recoveries are up to the task. (the newer TWRP 3 builds i have seen lack some of the required tools.) REPIT's makefile uses Flashize to convert each device-specific REPIT shell script to its final flashable form. the planned solution to this limitation of recovery-dependence is to make a version of Flashize that bundles not only the client script but a complete userland environment.
@@ -63,17 +70,9 @@ the defaults are device-dependent. please look inside your device's configuratio
 
 #### IN CASE OF ISSUES
 
-if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. otherwise, make sure to somehow record the log. you can easily [obtain a copy of the log](http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
+if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. otherwise, make sure to somehow record the log. you can easily [obtain a copy of the log] (http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
 
-> **PLEASE NOTE:** your _'did not work'_ report is useless unless you post info from your log.
-
-#### DOWNLOADS
-
-https://www.androidfilehost.com/?w=files&flid=49911
-
-#### CHANGELOG
-
-https://github.com/Lanchon/REPIT/releases
+**PLEASE NOTE:** your _'did not work'_ report is useless unless you post info from your log.
 
 <br>
 
@@ -93,7 +92,7 @@ you can nonetheless use this script to do general repartitioning, file system fi
 
 #### GT-I9100 HOW TO
 
-first get [my IsoRec TWRP 2.8.7.0](http://forum.xda-developers.com/galaxy-s2/orig-development/isorec-isolated-recovery-galaxy-s2-t3291176) (by arnab) running on your device, then follow the generic how-to.
+first get [my IsoRec TWRP 2.8.7.0] (http://forum.xda-developers.com/galaxy-s2/orig-development/isorec-isolated-recovery-galaxy-s2-t3291176) (by arnab) running on your device, then follow the generic how-to.
 
 valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
 
@@ -155,14 +154,14 @@ _we interrupt your regular programming to bring you this breaking news..._
 
 ### _"CHEF-KOCH" IS A THIEF !!!_
 
-> **UPDATE:** moderators from both [the german forum](http://www.android-hilfe.de/) and xda collaborated to resolve this
+> **UPDATE:** moderators from both [the german forum] (http://www.android-hilfe.de/) and xda collaborated to resolve this
 issue. they were alerted by some forum members who are active in both communities (and again i thank you guys for
 that, you know who you are). after a swift investigation, and just two days after this silliness started, they
 removed all offending content from the german site and placed a link to this thread in its place. i am very grateful
 to all the parties that quickly put this issue to rest.
 
 > **2ND UPDATE:** i was told that this guy's account at the german site was terminated; the reasons for this are unknown
-to me. and user [the.gangster](http://forum.xda-developers.com/member.php?u=6560258) was put in charge of the
+to me. and user [the.gangster] (http://forum.xda-developers.com/member.php?u=6560258) was put in charge of the
 repartition thread there. thank you for taking over!
 
 > **3RD UPDATE:** i privately told the.gangster a few days ago when this guy was banned from the german site that i
@@ -184,10 +183,10 @@ current version is GPLv3.) he also stole [Flashize]
 (http://forum.xda-developers.com/android/software-hacking/tool-flashize-shell-scripts-flashable-t3313605),
 another tool i published these days._
 
-_the plagiarized files are currently published [here](https://mega.nz/#F!cMNShQLa!5lXzEuluHX9jd9Bv3B_h8Q), but might
+_the plagiarized files are currently published [here] (https://mega.nz/#F!cMNShQLa!5lXzEuluHX9jd9Bv3B_h8Q), but might
 be removed anytime. a copy of all files was [uploaded to post #3]
 (http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65239837)_
-[now also surreptitiously deleted from XDA! rehosted [here](https://www.androidfilehost.com/?w=files&flid=50817)]
+[now also surreptitiously deleted from XDA! rehosted [here] (https://www.androidfilehost.com/?w=files&flid=50817)]
 _for record keeping._
 
 _i did delete my old published v0.1 files from xda, but fortunately i did not delete some customized versions of
@@ -207,10 +206,10 @@ the full complex log of a working, pre-release version of the application. that 
 
 _it is very unlikely that this is the only time he has done this, and i can tell you this is very demotivating for a developer. so protect your developers by helping them expose this clown in case they happen to cross paths with him. also, his clients and/or employers better know what kind of "work" this guy does._
 
-_android-hilfe.de: [CHEF-KOCH](http://www.android-hilfe.de/members/chef-koch.97407/)
-<br>xda-developers.com: [CHEF-KOCH](http://forum.xda-developers.com/member.php?u=4415879)
-<br>github.com: [CHEF-KOCH](https://github.com/CHEF-KOCH)
-<br>google.com: [Nvinside@gmail.com](mailto:Nvinside@gmail.com)_
+_android-hilfe.de: [CHEF-KOCH] (http://www.android-hilfe.de/members/chef-koch.97407/)
+<br>xda-developers.com: [CHEF-KOCH] (http://forum.xda-developers.com/member.php?u=4415879)
+<br>github.com: [CHEF-KOCH] (https://github.com/CHEF-KOCH)
+<br>google.com: [Nvinside@gmail.com] (mailto:Nvinside@gmail.com)_
 
 _he has this info on GitHub:
 <br>InfoSec Institute/nVidia EU
