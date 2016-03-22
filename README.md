@@ -75,8 +75,9 @@ https://www.androidfilehost.com/?w=files&flid=49911
 
 https://github.com/Lanchon/REPIT/releases
 
+<br>
 
-### Galaxy S2 GT-I9100 Support
+## Galaxy S2 GT-I9100 Support
 
 REPIT started its life as i9100-only tool and it inherits this doc section from the good old days.
 
@@ -123,8 +124,9 @@ sizes are expressed in GiB and get rounded to the nearest 4 MiB boundary.
     <br>(**note:** wiping data is much faster than moving it around if system is being resized and data is large.)
     <br>`-system=1-data=6+wipe-sdcard=max-preload=min+wipe`
 
+<br>
 
-#### DISCLAIMER
+## Disclaimer
 
 i believe this software to be very safe and i exercised it a lot before posting it. but i accept no responsibility if your data is lost or your device is bricked.
 
