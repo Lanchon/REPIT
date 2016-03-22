@@ -5,4 +5,4 @@ adb push dump.sh /tmp/
 echo.
 
 echo running...
-adb shell sh /tmp/dump.sh >dump-out.txt
+adb shell sh /tmp/dump.sh >repit-dump-out.txt

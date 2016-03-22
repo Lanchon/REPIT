@@ -10,7 +10,7 @@ mkdir -p zip
 rm -f "$unsignedZip"
 rm -f "$signedZip"
 
-flashize dump.sh "$unsignedZip"
+flashize dump.sh "$unsignedZip" repit-dump-out.txt
 signapk -w ../key/testkey.x509.pem ../key/testkey.pk8 "$unsignedZip" "$signedZip"
 
 rm "$unsignedZip"
