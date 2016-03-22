@@ -5,9 +5,13 @@
 
 [CHANGELOG]: https://github.com/Lanchon/REPIT/releases
 [DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
-[GALAXY S2]: https://github.com/Lanchon/REPIT#galaxy-s2-support
+[GALAXY S2]: https://github.com/Lanchon/REPIT#the-galaxy-s2-family
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
+
+<br>
+
+## General Information (All Devices)
 
 #### WHAT IS THE PROBLEM ?
 
@@ -75,7 +79,13 @@ if there are any problems, **read the log!** you can scroll it on TWRP. most lik
 
 <br>
 
-## Galaxy S2 Support
+## Device-Specific Information
+
+You might find device-specific readme files in the [device tree] (https://github.com/Lanchon/REPIT/tree/master/device). You can search by device codename using Github's [find file] (https://github.com/Lanchon/REPIT/find/master/device).
+
+<br>
+
+## The Galaxy S2 Family
 
 REPIT started its life as i9100-only tool and it inherits this doc section from the good old days.
 
