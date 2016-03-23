@@ -55,6 +55,8 @@
 #   11         6936576         7038975       50.0M   0700  Fota
 #    8         7038976        15251455       4010M   0700  UMS
 
+device_makeFlashizeEnv="twrp2-arm"
+
 device_makeFilenameConfig="system=same-data=3.0-cache=same-preload=same-fota=same-sdcard=max"
 
 device_checkDevice() {

@@ -11,6 +11,12 @@ makeZip() {
     ./make-script "$device"
     script="build/lanchon-repit-$device.sh"
 
+    makeFlashizeEnv="$(sed -n "s/^device_makeFlashizeEnv=\"\(.*\)\"$/\1/p" "$script")"
+    if [ -z "$makeFlashizeEnv" ]; then
+        >&2 echo "error: value not found: 'device_makeFlashizeEnv'"
+        exit 1
+    fi
+
     makeFilenameConfig="$(sed -n "s/^device_makeFilenameConfig=\"\(.*\)\"$/\1/p" "$script")"
     if [ -z "$makeFilenameConfig" ]; then
         >&2 echo "error: value not found: 'device_makeFilenameConfig'"
@@ -20,7 +26,7 @@ makeZip() {
     unsignedZip="build/lanchon-repit-unsigned-$device.zip"
     signedZip="build/lanchon-repit-$versionShort-$makeFilenameConfig-$device.zip"
 
-    flashize "$script" "$unsignedZip" lanchon-repit.log
+    flashize-env "$script" "$makeFlashizeEnv" "$unsignedZip" lanchon-repit.log
     signapk -w key/testkey.x509.pem key/testkey.pk8 "$unsignedZip" "$signedZip"
 
     #rm "$script"
