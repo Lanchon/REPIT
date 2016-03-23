@@ -13,7 +13,7 @@ makeZip() {
 
     makeFilenameConfig="$(sed -n "s/^device_makeFilenameConfig=\"\(.*\)\"$/\1/p" "$script")"
     if [ -z "$makeFilenameConfig" ]; then
-        >&2 echo "error: value not found: 'makeFilenameConfig'"
+        >&2 echo "error: value not found: 'device_makeFilenameConfig'"
         exit 1
     fi
 
