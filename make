@@ -20,7 +20,7 @@ makeZip() {
     unsignedZip="build/lanchon-repit-unsigned-$device.zip"
     signedZip="build/lanchon-repit-$versionShort-$makeFilenameConfig-$device.zip"
 
-    flashize "$script" "$unsignedZip"
+    flashize "$script" "$unsignedZip" lanchon-repit.log
     signapk -w key/testkey.x509.pem key/testkey.pk8 "$unsignedZip" "$signedZip"
 
     #rm "$script"
