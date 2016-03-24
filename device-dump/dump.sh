@@ -49,6 +49,11 @@ checkTools() {
     checkTool dirname
     checkTool dd
 
+    checkTool fdisk
+    checkTool gdisk
+    checkTool sfdisk
+    checkTool sgdisk
+
     #checkTools_fs_ext4
     #checkTools_fs_vfat
     #checkTools_fs_raw
