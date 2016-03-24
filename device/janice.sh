@@ -57,7 +57,7 @@
 
 device_makeFlashizeEnv="twrp2-arm"
 
-device_makeFilenameConfig="system=same-data=3.0-cache=same-preload=same-fota=same-sdcard=max"
+device_makeFilenameConfig="system=same-data=same-cache=same-preload=same-fota=same-sdcard=max"
 
 device_checkDevice() {
 
