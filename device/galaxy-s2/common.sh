@@ -11,7 +11,7 @@
 
 ### galaxy-s2
 
-device_makeFlashizeEnv="twrp2-arm"
+device_makeFlashizeEnv="env/arm.zip"
 
 device_makeFilenameConfig="system=1.0-data=same-sdcard=max-preload=min+wipe"
 
