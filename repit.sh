@@ -147,8 +147,8 @@ detectSideload() {
     # /tmp/update.zip: old sideload protocol
     # /sideload/package.zip: current sideload-host protocol
     if [ "$1" == "/tmp/update.zip" ] || [ "$1" == "/sideload/package.zip" ]; then
-        fatal "adb sideload is not supported (it hides the package filename and thus filename-based configuration does not work; "\
-"please adb push the package to /tmp instead and run it from there)"
+        fatal "adb sideload is not directly supported: it hides the package filename and thus filename-based configuration does not work "\
+"(please adb push the package to '/tmp' and run it from there; or adb sideload it after adding a 'flashize/settings' file to the package containing the desired package filename override)"
     fi
 
 }
@@ -662,6 +662,11 @@ main() {
     echo
 
     echo "=====  PRELIMINARY CHECKS  ====="
+    local settingsFile="/tmp/flashize/settings"
+    if [ -n "$FLASHIZE_ENV_VERSION" ] && [ -f "$settingsFile" ]; then
+        packageName="$(cat "$settingsFile")"
+        info "overriding configuration via 'flashize/settings' to '$packageName'"
+    fi
     init "$packageName"
     echo
 
