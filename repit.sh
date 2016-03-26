@@ -662,10 +662,12 @@ main() {
     echo
 
     echo "=====  PRELIMINARY CHECKS  ====="
-    local settingsFile="/tmp/flashize/settings"
-    if [ -n "$FLASHIZE_ENV_VERSION" ] && [ -f "$settingsFile" ]; then
-        packageName="$(cat "$settingsFile")"
-        info "overriding configuration via 'flashize/settings' to '$packageName'"
+    if [ -f "/tmp/repit-settings" ]; then
+        packageName="$(cat "/tmp/repit-settings")"
+        info "overriding configuration via '/tmp/repit-settings' to '$packageName'"
+    elif [ -n "$FLASHIZE_ENV_VERSION" ] && [ -f "/tmp/flashize/repit-settings" ]; then
+        packageName="$(cat "/tmp/flashize/repit-settings")"
+        info "overriding configuration via 'flashize/repit-settings' to '$packageName'"
     fi
     init "$packageName"
     echo
