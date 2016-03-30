@@ -37,7 +37,6 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
 
 - REPIT **requires TWRP 2 or TWRP 3.** some recoveries unnecessarily hold device or partition locks during flashing, which prevents all repartitioning tools from working (parted, fdisk, gdisk, and of course REPIT). your chosen recovery must not hold such locks. unfortunately the recoveries bundled with CM 11, 12.0, 12.1 and 13.0 display this issue and are incompatible. recent TWRP 2.8.7.* and 3.0.0.* recoveries comply with this requirement, but only when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
 - REPIT **does not support encrypted phones.**
-- REPIT obviously requires to be able to repartition the storage.   
 - REPIT **will cause data loss** if the repartitioning process is externally interrupted. **plug into a power source!**
 
 #### HOW TO REPIT
