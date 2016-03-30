@@ -153,15 +153,35 @@ i believe this software to be very safe and i exercised it a lot before posting 
 > **AND WHAT IS THIS?**
 >
 > what follows is text originally posted by me on XDA. the strange incident that was the subject of this post was
-investigated by moderators from both of the involves sites and found to be as i described it. as a result, proper
+investigated by moderators from both of the involved sites and found to be as i described it. as a result, proper
 corrective measures were implemented.
 >
 >unfortunately this post was later surreptitiously deleted by XDA moderator [The_Merovingian]
 (http://forum.xda-developers.com/member.php?u=5302753), an action that precipitated my departure from the XDA
-community.
+community as a developer. i no longer consider XDA a viable medium for hosting my work.
 >
 > the post is now reproduced here for record keeping in the form in which it was when it was deleted from XDA by
 The_Merovingian on February 23, 2016.
+
+> **UPDATE:** as a sort of retaliation for my moving REPIT out of XDA, The_Merovingian closed down
+[the REPIT thread] (http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747)
+([via Wayback Machine] (https://web.archive.org/web/20160226151111/http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747)).
+this was unfortunate because the thread got 30 pages of posts in its 2 weeks of existence, and probably was
+the second most active thread in the S2 forum. all this traffic then went to spam the official i9100 CM13 thread,
+already drowning in off-topic noise; it was a mess.
+>
+> clearly XDA members needed a place to discuss REPIT but XDA did not really care about this. 
+The_Merovingian told me that i needed to "remove [the rant]
+(http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65239832)"
+in order for the thread to be reopened. i reached out to the XDA moderation committee asking for the
+official position on whether "DUE TO IRRECONCILABLE DIFFERENCES" constituted an unacceptable rant on XDA.
+i am still waiting for a response... :)
+>
+> censorship attempts typically backfire on the internet. what was to be a post on a forum is now inextricably
+linked to the history of an open source project in its git repo, cloned by anyone needing the tool's tree.
+>
+> After all is said and done, all the trouble caused and the time lost, i have but one personal message
+to The_Merovingian, and it is this: the matrix is a silly franchise.
 
 <br>
 
