@@ -30,13 +30,14 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
   - before starting, REPIT checks for the existence of all the tools that will be needed for the task at hand, verifies that the current partition layout passes several sanity checks, checks and fixes all the involved file systems, and verifies that the new partition layout will meet its sanity checks too. REPIT performs a dry-run of the complete repartitioning process to detect possible problems early on.
   - if REPIT fails, it will nonetheless try to restore your device to a working in-between state. you can solve the blocking issue and REPIT again towards your goal, or otherwise REPIT back to your original configuration. (keeping the in-between state is not recommended as it usually involves 'wasted' unpartitioned space.)
   - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported.
-- recovery-independent: REPIT bundles a complete userland environment that is temporarily setup at runtime (courtesy of [Flashize] (https://github.com/Lanchon/Flashize)), freeing it from dependencies on specific recoveries.
 - easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
+- recovery-independent: REPIT bundles a complete userland environment that is temporarily setup at runtime (courtesy of [Flashize] (https://github.com/Lanchon/Flashize)), freeing it from dependencies on specific recoveries.
 
 #### LIMITATIONS
 
+- REPIT **requires TWRP 2 or TWRP 3.** some recoveries unnecessarily hold device or partition locks during flashing, which prevents all repartitioning tools from working (parted, fdisk, gdisk, and of course REPIT). your chosen recovery must not hold such locks. unfortunately the recoveries bundled with CM 11, 12.0, 12.1 and 13.0 display this issue and are incompatible. recent TWRP 2.8.7.* and 3.0.0.* recoveries comply with this requirement, but only when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
 - REPIT **does not support encrypted phones.**
-- REPIT obviously requires to be able to repartition the storage. some recoveries unnecessarily hold device or partition locks that prevent all repartitioning tools from working. your chosen recovery must not hold such locks. it is known that recent TWRP 2.8.7.* recoveries comply with this requirement when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
+- REPIT obviously requires to be able to repartition the storage.   
 - REPIT **will cause data loss** if the repartitioning process is externally interrupted. **plug into a power source!**
 
 #### HOW TO REPIT
