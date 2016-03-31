@@ -49,6 +49,8 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
 6. **PLUG INTO A POWER SOURCE.** this operation might take a long time and **must not be interrupted.**
 7. flash the zip locally on the phone. (if you want to sideload instead, please see the note below.)
 
+finally, go get a coffee or two. **do not, under any circumstance, interrupt this script !!!**
+
 in case the script fails to start:
 - if the script cannot unmount all partitions, it will copy itself to the /tmp directory and ask you to flash it a second time from there.
 - if it still fails to unmount all partitions, or if it fails to lock the eMMC ('unable to reread the partition table'), then you need to reboot TWRP and reflash the script immediately after boot up. (you may actually need to reflash twice, the second time from '/tmp'.) do not do anything after boot up and before flashing! in particular, **do not mount the sdcard as USB mass storage.**
@@ -58,8 +60,6 @@ if you want to sideload:
 - sideloading conceals the filename from the device, and thus filename-based configuration will not work.
 - to sideload you need to add a file called 'flashize/repit-settings' to the zip containing the full intended filename, or otherwise just the configuration part of it. for example, a file containing `-system=1` is enough (the `-` is required). note that your recovery might require you to resign the zip after that change.
 - otherwise you can add the file directly to the device before sideloading, for example via adb push. in that case it must be named '/tmp/repit-settings'.
-
-finally, go get a coffee or two. **do not, under any circumstance, interrupt this script !!!**
 
 #### HOW TO CONFIGURE
 
