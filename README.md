@@ -167,7 +167,7 @@ The_Merovingian on February 23, 2016.
 [the REPIT thread] (http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747)
 ([via Wayback Machine] (https://web.archive.org/web/20160226151111/http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747)).
 this was unfortunate because the thread got 30 pages of posts in its 2 weeks of existence, and probably was
-the second most active thread in the S2 forum. all this traffic then went to spam the official i9100 CM13 thread,
+the second most active thread in the S2 forum. all this traffic then went on to spam the official i9100 CM13 thread,
 already drowning in off-topic noise; it was a mess.
 >
 > clearly XDA members needed a place to discuss REPIT but XDA did not really care about this. 
