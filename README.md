@@ -30,13 +30,13 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
   - before starting, REPIT checks for the existence of all the tools that will be needed for the task at hand, verifies that the current partition layout passes several sanity checks, checks and fixes all the involved file systems, and verifies that the new partition layout will meet its sanity checks too. REPIT performs a dry-run of the complete repartitioning process to detect possible problems early on.
   - if REPIT fails, it will nonetheless try to restore your device to a working in-between state. you can solve the blocking issue and REPIT again towards your goal, or otherwise REPIT back to your original configuration. (keeping the in-between state is not recommended as it usually involves 'wasted' unpartitioned space.)
   - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported.
-- recovery-independent: REPIT bundles a complete userland environment that is temporarily setup at runtime (courtesy of [Flashize] (https://github.com/Lanchon/Flashize)), freeing it from dependencies on specific recoveries.
 - easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
+- recovery-independent: REPIT bundles a complete userland environment that is temporarily setup at runtime (courtesy of [Flashize] (https://github.com/Lanchon/Flashize)), freeing it from dependencies on specific recoveries.
 
 #### LIMITATIONS
 
+- REPIT **requires TWRP 2 or TWRP 3.** some recoveries unnecessarily hold device or partition locks during flashing, which prevents all repartitioning tools from working (parted, fdisk, gdisk, and of course REPIT). your chosen recovery must not hold such locks. unfortunately the recoveries bundled with CM 11, 12.0, 12.1 and 13.0 display this issue and are incompatible. recent TWRP 2.8.7.* and 3.0.0.* recoveries comply with this requirement, but only when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
 - REPIT **does not support encrypted phones.**
-- REPIT obviously requires to be able to repartition the storage. some recoveries unnecessarily hold device or partition locks that prevent all repartitioning tools from working. your chosen recovery must not hold such locks. it is known that recent TWRP 2.8.7.* recoveries comply with this requirement when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
 - REPIT **will cause data loss** if the repartitioning process is externally interrupted. **plug into a power source!**
 
 #### HOW TO REPIT
@@ -49,6 +49,8 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
 6. **PLUG INTO A POWER SOURCE.** this operation might take a long time and **must not be interrupted.**
 7. flash the zip locally on the phone. (if you want to sideload instead, please see the note below.)
 
+finally, go get a coffee or two. **do not, under any circumstance, interrupt this script !!!**
+
 in case the script fails to start:
 - if the script cannot unmount all partitions, it will copy itself to the /tmp directory and ask you to flash it a second time from there.
 - if it still fails to unmount all partitions, or if it fails to lock the eMMC ('unable to reread the partition table'), then you need to reboot TWRP and reflash the script immediately after boot up. (you may actually need to reflash twice, the second time from '/tmp'.) do not do anything after boot up and before flashing! in particular, **do not mount the sdcard as USB mass storage.**
@@ -58,8 +60,6 @@ if you want to sideload:
 - sideloading conceals the filename from the device, and thus filename-based configuration will not work.
 - to sideload you need to add a file called 'flashize/repit-settings' to the zip containing the full intended filename, or otherwise just the configuration part of it. for example, a file containing `-system=1` is enough (the `-` is required). note that your recovery might require you to resign the zip after that change.
 - otherwise you can add the file directly to the device before sideloading, for example via adb push. in that case it must be named '/tmp/repit-settings'.
-
-finally, go get a coffee or two. **do not, under any circumstance, interrupt this script !!!**
 
 #### HOW TO CONFIGURE
 
@@ -153,15 +153,35 @@ i believe this software to be very safe and i exercised it a lot before posting 
 > **AND WHAT IS THIS?**
 >
 > what follows is text originally posted by me on XDA. the strange incident that was the subject of this post was
-investigated by moderators from both of the involves sites and found to be as i described it. as a result, proper
+investigated by moderators from both of the involved sites and found to be as i described it. as a result, proper
 corrective measures were implemented.
 >
 >unfortunately this post was later surreptitiously deleted by XDA moderator [The_Merovingian]
 (http://forum.xda-developers.com/member.php?u=5302753), an action that precipitated my departure from the XDA
-community.
+community as a developer. i no longer consider XDA a viable medium for hosting my work.
 >
 > the post is now reproduced here for record keeping in the form in which it was when it was deleted from XDA by
 The_Merovingian on February 23, 2016.
+
+> **UPDATE:** as a sort of retaliation for my moving REPIT out of XDA, The_Merovingian closed down
+[the REPIT thread] (http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747)
+([via Wayback Machine] (https://web.archive.org/web/20160226151111/http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747)).
+this was unfortunate because the thread got 30 pages of posts in its 2 weeks of existence, and probably was
+the second most active thread in the S2 forum. all this traffic then went on to spam the official i9100 CM13 thread,
+already drowning in off-topic noise; it was a mess.
+>
+> clearly XDA members needed a place to discuss REPIT but XDA did not really care about this. 
+The_Merovingian told me that i needed to "remove [the rant]
+(http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65239832)"
+in order for the thread to be reopened. i reached out to the XDA moderation committee asking for the
+official position on whether "DUE TO IRRECONCILABLE DIFFERENCES" constituted an unacceptable rant on XDA.
+i am still waiting for a response... :)
+>
+> censorship attempts typically backfire on the internet. what was to be a post on a forum is now inextricably
+linked to the history of an open source project in its git repo, cloned by anyone needing the tool's tree.
+>
+> After all is said and done, all the trouble caused and the time lost, i have but one personal message
+to The_Merovingian, and it is this: the matrix is a silly franchise.
 
 <br>
 
