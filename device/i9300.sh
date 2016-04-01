@@ -33,7 +33,7 @@
 
 device_makeFlashizeEnv="env/arm.zip"
 
-device_makeFilenameConfig="cache=same-system=same-preload=same-ota=same-data=max"
+device_makeFilenameConfig="cache=0.03125+wipe-system=same-preload=min+wipe-ota=same-data=max"
 
 device_checkDevice() {
 
