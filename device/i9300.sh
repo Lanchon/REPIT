@@ -11,6 +11,8 @@
 
 ### i9300
 
+# This port was possible thanks to the invaluable help of ElPumpo/Hawaii_Beach.
+
 # Disk /dev/block/mmcblk0: 30777344 sectors, 2740M
 # Logical sector size: 512
 # Disk identifier (GUID): 52444e41-494f-2044-4d4d-43204449534b
