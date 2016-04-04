@@ -11,6 +11,8 @@
 
 ### i9100g
 
+# This port was possible thanks to the invaluable help of MalcolmMcConnor.
+
 device_checkDevice() {
 
     checkTool getprop
