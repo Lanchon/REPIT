@@ -10,6 +10,7 @@
     - your recovery (version? official? if not where did you get it?).
     - your kernel.
     - your rom.
+    - is your device running the stock partition layout or is it already modified?
 
 #### How To Dump Via Sideload
 

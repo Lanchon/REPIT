@@ -87,7 +87,11 @@ if there are any problems, **read the log!** you can scroll it on TWRP. most lik
 
 ## Device-Specific Information
 
-You might find device-specific readme files in the [device tree] (https://github.com/Lanchon/REPIT/tree/master/device). You can search by device codename using Github's [find file] (https://github.com/Lanchon/REPIT/find/master/device).
+you can find device-specific information in the [device tree] (https://github.com/Lanchon/REPIT/tree/master/device); try searching by device codename using Github's [find file] (https://github.com/Lanchon/REPIT/find/master/device). all configuration options for a specific device are defined in the corresponding `<codename>.sh` file and the `common.sh` files that might exist in the same directory and in directories above it. you might also find device-specific readme files with relevant information.
+
+#### IF YOUR DEVICE IS NOT SUPPORTED
+
+if you cannot find your device in the device tree, that means that it is unsupported. but porting REPIT to a new device is easily done; you can either do it yourself or request that i do it for you. to request a new port, please follow the steps detailed [here] (https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md). port requests are welcome.
 
 <br>
 
