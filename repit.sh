@@ -45,6 +45,18 @@ checkTool() {
     fi
 }
 
+chooseTool() {
+    #info "choosing tool: $*"
+    local tool
+    for tool in "$@"; do
+        if [ -n "$(which "$tool")" ]; then
+            echo "$tool"
+            return
+        fi
+    done
+    fatal "all tool alternatives missing: $* (please use a recent version of TWRP to run this package)"
+}
+
 runParted() {
     parted -s $ddev unit s "$@"
 }
