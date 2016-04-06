@@ -13,7 +13,7 @@
 
 set -e
 
-version="2016-04-01"
+version="2016-04-06"
 
 ### logging
 
