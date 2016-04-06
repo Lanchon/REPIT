@@ -1,0 +1,196 @@
+ ####################################
+  Lanchon REPIT
+  A Data-Sparing Repartitioning Tool
+  Version: 2016-04-06
+  Device: i9100
+  Copyright 2016, Lanchon (GPLv3)
+ ####################################
+
+=====  PRELIMINARY CHECKS  =====
+info: valid package names: <prefix>[-(system|data|sdcard|preload)=<conf>]...<suffix>
+info: valid partition <conf> values: [<size-in-GiB>|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]
+
+-----  DEFAULTS  -----
+system = size:same + content:keep + fs:ext4
+data = size:same + content:keep + fs:ext4
+sdcard = size:same + content:keep + fs:vfat
+preload = size:same + content:keep + fs:ext4
+
+info: parsing package name
+
+-----  CONFIGURATION  -----
+system = size:1.0 + content:keep + fs:ext4
+data = size:6 + content:keep + fs:ext4
+sdcard = size:max + content:keep + fs:vfat
+preload = size:min + content:wipe + fs:ext4
+
+info: disabling swap
+info: unmounting all partitions
+info: rereading partition table
+
+=====  PREPARATION  =====
+info: determining usable sector range of block device
+info: checking existing partitions
+#####  processing heap 'main'
+info: checking existing partition layout
+info: current size: partition #9 'system' (FACTORYFS): 768 MiB
+info: current size: partition #10 'data' (DATAFS): 512 MiB
+info: current size: partition #11 'sdcard' (UMS): 13064 MiB
+info: current size: partition #12 'preload' (HIDDEN): 512 MiB
+info: checking new partition layout
+info: new size: partition #9 'system' (FACTORYFS): 1024 MiB
+info: new size: partition #10 'data' (DATAFS): 6144 MiB
+info: new size: partition #11 'sdcard' (UMS): 7680 MiB
+info: new size: partition #12 'preload' (HIDDEN): 8 MiB
+
+=====  DRY-RUN  =====
+#####  processing heap 'main'
+-----  analyzing partition #9 'system' (FACTORYFS)
+info: partition #9 'system' (FACTORYFS) will expand into storage area currently used by partition #10 'data' (DATAFS)
+info: deferring processing of partition #9 'system' (FACTORYFS) until required space is freed
+-----  analyzing partition #10 'data' (DATAFS)
+info: partition #10 'data' (DATAFS) will expand into storage area currently used by partition #11 'sdcard' (UMS)
+info: deferring processing of partition #10 'data' (DATAFS) until required space is freed
+-----  analyzing partition #11 'sdcard' (UMS)
+info: partition #11 'sdcard' (UMS) will expand into storage area currently used by partition #12 'preload' (HIDDEN)
+info: deferring processing of partition #11 'sdcard' (UMS) until required space is freed
+-----  analyzing partition #12 'preload' (HIDDEN)
+*****  processing partition #12 'preload' (HIDDEN)
+info: will format the partition in ext4 and trim it
+*****  processing partition #11 'sdcard' (UMS)
+info: will move/resize the vfat partition
+info: checking the file system
+fsck.fat 3.0.28 (2015-05-16)
+/dev/block/mmcblk0p11: 62 files, 286825/3337853 clusters
+*****  processing partition #10 'data' (DATAFS)
+info: will move the ext4 partition
+WARNING: moving a big ext4 partition can take a very long time; it requires copying the complete partition, including its free space
+info: will resize the ext4 partition
+info: checking and trimming the file system
+/dev/block/mmcblk0p10: 797/32768 files (10.7% non-contiguous), 90304/131068 blocks
+*****  processing partition #9 'system' (FACTORYFS)
+info: will resize the ext4 partition
+info: checking and trimming the file system
+system: 1833/49152 files (0.0% non-contiguous), 117150/196608 blocks
+
+=====  EXECUTION  =====
+#####  processing heap 'main'
+-----  analyzing partition #9 'system' (FACTORYFS)
+info: partition #9 'system' (FACTORYFS) will expand into storage area currently used by partition #10 'data' (DATAFS)
+info: deferring processing of partition #9 'system' (FACTORYFS) until required space is freed
+-----  analyzing partition #10 'data' (DATAFS)
+info: partition #10 'data' (DATAFS) will expand into storage area currently used by partition #11 'sdcard' (UMS)
+info: deferring processing of partition #10 'data' (DATAFS) until required space is freed
+-----  analyzing partition #11 'sdcard' (UMS)
+info: partition #11 'sdcard' (UMS) will expand into storage area currently used by partition #12 'preload' (HIDDEN)
+info: deferring processing of partition #11 'sdcard' (UMS) until required space is freed
+-----  analyzing partition #12 'preload' (HIDDEN)
+*****  processing partition #12 'preload' (HIDDEN)
+info: deleting current partition
+info: creating new partition
+info: naming the partition
+info: rereading partition table
+info: formatting the partition in ext4 and trimming it
+
+Warning: the fs_type small is not defined in mke2fs.conf
+
+*****  processing partition #11 'sdcard' (UMS)
+info: moving/resizing the vfat partition
+info: note that the error 'unable to satisfy all constraints on the partition' usually means that the new desired partition size would be too small to hold the files already stored in the partition.
+info: rereading partition table
+info: checking the file system
+fsck.fat 3.0.28 (2015-05-16)
+/dev/block/mmcblk0p11: 62 files, 286825/1962238 clusters
+*****  processing partition #10 'data' (DATAFS)
+info: moving the ext4 partition
+info: ensure that the destination partition can be created before starting the move
+info: deleting current partition
+info: creating new partition
+info: naming the partition
+info: rereading partition table
+info: deleting the partition to workaround dd's 4 GiB wraparound bug
+info: moving data towards the end of the disk
+
+-----  moving 256 MiB chunk: 1192 MiB -> 1448 MiB
+info: creating a temporary partition to read chunk at device offset 1192 MiB
+info: rereading partition table
+info: reading data
+524288+0 records in
+524288+0 records out
+268435456 bytes (256.0MB) copied, 6.977768 seconds, 36.7MB/s
+info: deleting the temporary partition
+info: creating a temporary partition to write chunk at device offset 1448 MiB
+info: rereading partition table
+info: writing data
+524288+0 records in
+524288+0 records out
+268435456 bytes (256.0MB) copied, 136.736488 seconds, 1.9MB/s
+info: deleting the temporary partition
+
+-----  moving 256 MiB chunk: 936 MiB -> 1192 MiB
+info: creating a temporary partition to read chunk at device offset 936 MiB
+info: rereading partition table
+info: reading data
+524288+0 records in
+524288+0 records out
+268435456 bytes (256.0MB) copied, 7.215978 seconds, 35.5MB/s
+info: deleting the temporary partition
+info: creating a temporary partition to write chunk at device offset 1192 MiB
+info: rereading partition table
+info: writing data
+524288+0 records in
+524288+0 records out
+268435456 bytes (256.0MB) copied, 134.066894 seconds, 1.9MB/s
+info: deleting the temporary partition
+
+info: creating the final partition
+info: naming the partition
+info: rereading partition table
+info: checking and trimming the file system
+/dev/block/mmcblk0p10: 797/32768 files (10.7% non-contiguous), 90304/131068 blocks
+info: enlarging the partition entry
+info: deleting current partition
+info: creating new partition
+info: naming the partition
+info: rereading partition table
+info: creating a temporary partition to wipe the crypto footer due to dd's 4 GiB wraparound bug
+info: deleting current partition
+info: creating new partition
+info: naming the partition
+info: rereading partition table
+info: wiping the crypto footer
+32+0 records in
+32+0 records out
+16384 bytes (16.0KB) copied, 0.010336 seconds, 1.5MB/s
+info: recreating the original partition
+info: deleting current partition
+info: creating new partition
+info: naming the partition
+info: rereading partition table
+info: enlarging the ext4 file system
+resize2fs 1.42.9 (28-Dec-2013)
+Resizing the filesystem on /dev/block/mmcblk0p10 to 1572860 (4k) blocks.
+The filesystem on /dev/block/mmcblk0p10 is now 1572860 blocks long.
+
+info: checking and trimming the file system
+/dev/block/mmcblk0p10: Inode 7, i_size is 1610670080, should be 1610690560.  FIXED.
+/dev/block/mmcblk0p10: 797/393216 files (10.7% non-contiguous), 114845/1572860 blocks
+info: file system errors in partition #10 'data' (DATAFS) were fixed
+*****  processing partition #9 'system' (FACTORYFS)
+info: enlarging the partition entry
+info: deleting current partition
+info: creating new partition
+info: naming the partition
+info: rereading partition table
+info: enlarging the ext4 file system
+resize2fs 1.42.9 (28-Dec-2013)
+Resizing the filesystem on /dev/block/mmcblk0p9 to 262144 (4k) blocks.
+The filesystem on /dev/block/mmcblk0p9 is now 262144 blocks long.
+
+info: checking and trimming the file system
+system: 1833/65536 files (0.0% non-contiguous), 118211/262144 blocks
+info: flushing buffers
+
+=====  SUCCESS  =====
+
+[OK]
