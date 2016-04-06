@@ -43,6 +43,8 @@ makeScript() {
     >>"$out" echo
     >>"$out" cat repit-fs-vfat.sh
     >>"$out" echo
+    >>"$out" cat repit-fs-f2fs.sh
+    >>"$out" echo
     >>"$out" cat repit-fs-raw.sh
     >>"$out" echo
 
