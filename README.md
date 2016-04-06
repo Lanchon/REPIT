@@ -67,15 +67,39 @@ configure the script by renaming the zip file before flashing it.
 
 valid zip names: `<prefix>[-partition1=<conf>][-partition2=<conf>]...<suffix>`
 
-valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat|raw]]]`
+valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]`
 
 the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see (the i9100 section) [https://github.com/Lanchon/REPIT#galaxy-s2-samples] below.
 
-##### Sizes
+##### Partition Data
+- `keep`: retain the data in the partition. if the partition needs to be moved or resized, this option usually makes the operation significantly slower.
+- `wipe`: wipe the partition. always wipe partitions that are empty or carry data that you do not care about: it will make REPIT faster and will result in less wear on the flash memory.
+
+##### Partition Sizes
 - `same`: do not alter the size of this partition.
 - `min`: make this unused partition a minimum yet formattable size (typically 8 MiB, but device-dependent).
 - `max`: make this partition as big as possible (at most one partition per 'heap' can have its size set to 'max').
 - `<size>`: fractional number expressing the desired partition size (typically in GiB, but device-dependent). this value gets rounded to the nearest acceptable discreet value. the size granularity is device-dependent, but typically set to match the device-dependent alignment size, which typically is 1 or 4 MiB.
+
+##### Partition Types
+- `ext4` and `vfat`: these partitions have full move, resize and wipe support.
+- `f2fs`: f2fs partitions can be moved and wiped, and can only be resized while wiping them. (tools to resize f2fs file systems do not exist for now.)
+- `swap`: swap partitions can be wiped, and can only be moved or resized while wiping them. (it makes no sense to retain their content.)
+- `raw`: raw partitions are treated as opaque blobs and can only be moved. neither resizing nor wiping is supported.
+
+##### Supported Features
+
+|          | wipe | keep + move       | keep + resize   | keep + move + resize | cypto footer |
+|:--------:|:----:|:-----------------:|:---------------:|:--------------------:|:------------:|
+| **ext4** | YES  | YES (brute force) | YES (efficient) | YES (brute force)    | YES          |
+| **vfat** | YES  | YES (efficient)   | YES (efficient) | YES (efficient)      | no           |
+| **f2fs** | YES  | YES (brute force) | no              | no                   | YES          |
+| **swap** | YES  | no                | no              | no                   | no           |
+| **raw**  | no   | YES               | no              | no                   | no           |
+
+- **brute force:** the complete partition extent is operated upon.
+- **efficient:** only the stored data within the partition is operated upon.
+- **cypto footer:** support for encryption metadata at the end of the partition.
 
 #### IN CASE OF ISSUES
 
