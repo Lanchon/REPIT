@@ -1,7 +1,7 @@
-### How To Dump Your Device To Request A New Port
+#### How To Dump Your Device To Request A New Port
 
 - get a recent TWRP running on your device.
-- copy 'repit-dump.zip' to your device and flash it.
+- copy '[repit-dump.zip] (https://github.com/Lanchon/REPIT/raw/master/device-dump/repit-dump.zip)' to your device and flash it.
 - pull to your PC a file called 'repit-dump.log' that was generated in the same folder that holds 'repit-dump.zip'.
 - go [here] (https://github.com/Lanchon/REPIT/issues/new) and create a new issue:
   - attach the pulled 'repit-dump.log' file.
@@ -11,4 +11,9 @@
     - your kernel.
     - your rom.
 
-thank you!
+#### How To Dump Via Sideload
+
+- adb sideload repit-dump.zip
+- adb pull /tmp/repit-dump.log
+
+**thank you!**
