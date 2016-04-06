@@ -13,8 +13,8 @@
 
 checkTools_fs_vfat() {
     # only require tools if actually needed
-    #checkTool mkdosfs
-    #checkTool dosfsck
+    #mkfs_vfat=$(chooseTool mkdosfs mkfs.fat)
+    #fsck_vfat=$(chooseTool dosfsck fsck.fat)
     :
 }
 
@@ -28,7 +28,7 @@ processPar_vfat_wipe_dry() {
     local newSize=$6
 
     info "will format the partition in vfat"
-    checkTool mkdosfs
+    mkfs_vfat=$(chooseTool mkdosfs mkfs.fat)
 
 }
 
@@ -43,7 +43,7 @@ processPar_vfat_wipe_wet() {
 
     processParRecreate $n $oldStart $oldSize $newStart $newSize
     info "formatting the partition in vfat"
-    mkdosfs -I $dev
+    $mkfs_vfat -I $dev
 
 }
 
@@ -54,9 +54,9 @@ checkFs_vfat() {
 
     info "checking the file system"
     # the -w flag is used here to bound memory use
-    if ! dosfsck -pw $dev; then
+    if ! $fsck_vfat -pw $dev; then
         info "errors detected, retrying the file system check"
-        if ! dosfsck -pw $dev; then
+        if ! $fsck_vfat -pw $dev; then
             fatal "file system errors in $(parName $n) could not be automatically fixed"
         fi
     fi
@@ -75,7 +75,7 @@ processPar_vfat_keep_dry() {
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
         info "will move/resize the vfat partition"
     fi
-    checkTool dosfsck
+    fsck_vfat=$(chooseTool dosfsck fsck.fat)
     checkFs_vfat $@
 
 }
