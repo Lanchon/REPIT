@@ -33,6 +33,8 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
   - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported.
 - easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
 
+you can look at [the log of a demo run] (https://raw.githubusercontent.com/Lanchon/REPIT/master/LOG.txt) to get a feel for what REPIT can do. in this run on a Galaxy S2 it grows the /system and /data ext4 partitions to 1 and 6 GiB respectively, it wipes and shrinks the unused /preload partition to a minimum size, and it adjusts the size of the internal /sdcard vfat partition to occupy whatever space is left. REPIT plans, orders and undertakes a safe series of partition resize and move operations to reach its goal, all the while keeping and eye on details such as alignments and retaining the data present in the /system, /data and /sdcard partitions.
+
 #### LIMITATIONS
 
 - REPIT **requires TWRP 2 or TWRP 3.** some recoveries unnecessarily hold device or partition locks during flashing, which prevents all repartitioning tools from working (parted, fdisk, gdisk, and of course REPIT). unfortunately the recoveries bundled with CM 11, 12.0, 12.1 and 13.0 display this issue and are incompatible. recent TWRP 2.8.7.* and 3.0.0.* recoveries comply with this requirement, but only when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
@@ -118,7 +120,7 @@ you can find device-specific information in the [device tree] (https://github.co
 
 #### IF YOUR DEVICE IS NOT SUPPORTED
 
-if you cannot find your device in the device tree, that means that it is unsupported. but porting REPIT to a new device is easily done; you can either do it yourself or request that i do it for you. to request a new port, please follow the steps detailed [here] (https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md). port requests are welcome.
+if you cannot find your device in the device tree, that means that it is unsupported. but porting REPIT to a new device is easily done; you can either do it yourself or request that i do it for you. to request a new port, please [follow this steps] (https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md). port requests are welcome.
 
 <br>
 
