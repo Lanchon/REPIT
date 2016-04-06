@@ -2,15 +2,13 @@
 
 set -e
 
-unsignedZip="zip/repit-dump-unsigned.zip"
-signedZip="zip/repit-dump.zip"
-
-mkdir -p zip
+unsignedZip="repit-dump-unsigned.zip"
+signedZip="repit-dump.zip"
 
 rm -f "$unsignedZip"
 rm -f "$signedZip"
 
-flashize dump.sh "$unsignedZip" repit-dump-out.txt
+flashize-env dump.sh ../env/arm.zip "$unsignedZip" :
 signapk -w ../key/testkey.x509.pem ../key/testkey.pk8 "$unsignedZip" "$signedZip"
 
 rm "$unsignedZip"

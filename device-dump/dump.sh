@@ -18,7 +18,7 @@ run() {
     "$@"
     local code=$?
     echo
-    return $?
+    return $code
 }
 
 run getprop ro.product.device
@@ -26,11 +26,6 @@ run grep ro.product.device default.prop
 
 run getprop ro.build.product
 run grep ro.build.product default.prop
-
-run getprop
-run cat /default.prop
-
-run set
 
 checkTool() {
     echo "$1:"
@@ -68,7 +63,9 @@ checkTools_fs_ext4() {
 
 checkTools_fs_vfat() {
     checkTool mkdosfs
+    checkTool mkfs.fat
     checkTool dosfsck
+    checkTool fsck.fat
 }
 
 checkTools_fs_raw() {
@@ -81,22 +78,29 @@ run checkTools_fs_ext4
 run checkTools_fs_vfat
 run checkTools_fs_raw
 
+run ls -l /sys/block/mmcblk0
+
+run parted -s /dev/block/mmcblk0 unit MiB print free unit s print free
+run sgdisk /dev/block/mmcblk0 --set-alignment 1 --print
+
+run getprop
+run cat /default.prop
+
+run env
+run set
+
 run ls -lR /sbin
 
 run ls -l /dev/block
 run ls -l /sys/block
 
-run_fdisk() {
-    echo p | fdisk -u $1
-}
-
 for device in /dev/block/*; do
-    run parted -s $device unit MiB print free unit s print free
-    run run_fdisk $device
+    run parted -s "$device" unit MiB print free unit s print free &&
+    run sgdisk "$device" --set-alignment 1 --print
 done
 
 run ls -lR /dev/block
 run ls -lR /sys/block
 
-run ls -lR /dev
-run ls -lR /sys
+#run ls -lR /dev
+#run ls -lR /sys
