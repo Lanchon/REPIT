@@ -15,4 +15,10 @@ script="build/lanchon-repit-$device.sh"
 adb push "$script" /tmp/repit.sh
 echo
 
-adb shell sh /tmp/repit.sh "/tmp/lanchon-repit-00000000-$conf-$device.zip"
+#adb shell sh -c ".\ /tmp/flashize/env/setup\ ;\ .\ /tmp/repit.sh\ /tmp/lanchon-repit-00000000-$conf-$device.zip"
+
+adb shell <<EOF
+. /tmp/flashize/env/setup &&
+. /tmp/repit.sh /tmp/lanchon-repit-00000000-$conf-$device.zip
+exit
+EOF
