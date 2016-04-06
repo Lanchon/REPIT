@@ -68,6 +68,15 @@ checkTools_fs_vfat() {
     checkTool fsck.fat
 }
 
+checkTools_fs_f2fs() {
+    checkTool mkfs.f2fs
+    checkTool fsck.f2fs
+}
+
+checkTools_fs_swap() {
+    checkTool mkswap
+}
+
 checkTools_fs_raw() {
     :
 }
@@ -76,6 +85,8 @@ run checkTools
 
 run checkTools_fs_ext4
 run checkTools_fs_vfat
+run checkTools_fs_f2fs
+run checkTools_fs_swap
 run checkTools_fs_raw
 
 run ls -l /sys/block/mmcblk0
