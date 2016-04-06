@@ -1,11 +1,11 @@
 ## Lanchon REPIT
 ### A Device-Only Data-Sparing Repartitioning Tool For Android
 
-#### [CHANGELOG] - [DOWNLOADS] - [DEVICES] - [GALAXY S2]
+#### [CHANGELOG] - [DEVICES] - [DOWNLOADS] - [GALAXY S2]
 
 [CHANGELOG]: https://github.com/Lanchon/REPIT/releases
-[DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
 [DEVICES]:   https://github.com/Lanchon/REPIT#device-specific-information
+[DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
 [GALAXY S2]: https://github.com/Lanchon/REPIT#the-galaxy-s2-family
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
