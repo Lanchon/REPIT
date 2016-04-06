@@ -72,7 +72,7 @@ valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat
 the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see (the i9100 section) [https://github.com/Lanchon/REPIT#galaxy-s2-samples] below.
 
 ##### Partition Data
-- `keep`: retain the data in the partition. if the partition needs to be moved or resized, this option usually makes the operation significantly slower.
+- `keep`: retain the data in the partition. if the partition needs to be moved or resized, this option usually makes the operation significantly slower, even if the partition is mostly empty.
 - `wipe`: wipe the partition. always wipe partitions that are empty or carry data that you do not care about: it will make REPIT faster and will result in less wear on the flash memory.
 
 ##### Partition Sizes
@@ -83,9 +83,12 @@ the defaults are device-dependent. please look inside your device's configuratio
 
 ##### Partition Types
 - `ext4` and `vfat`: these partitions have full move, resize and wipe support.
-- `f2fs`: f2fs partitions can be moved and wiped, and can only be resized while wiping them. (tools to resize f2fs file systems do not exist for now.)
-- `swap`: swap partitions can be wiped, and can only be moved or resized while wiping them. (it makes no sense to retain their content.)
-- `raw`: raw partitions are treated as opaque blobs and can only be moved. neither resizing nor wiping is supported.
+- `f2fs`: f2fs partitions can be moved and wiped, and can only be resized while wiping them.
+<br>(tools to resize f2fs file systems do not exist for now.)
+- `swap`: swap partitions can be wiped, and can only be moved or resized while wiping them.
+<br>(it makes no sense to retain their content.)
+- `raw`: raw partitions are treated as opaque blobs and can only be moved.
+<br>(neither resizing nor wiping is supported.)
 
 ##### Supported Features
 
