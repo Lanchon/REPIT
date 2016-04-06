@@ -63,7 +63,7 @@ rereadParTable() {
 detectBlockDeviceHeapRange() {
     info "determining usable sector range of block device"
     checkTool sgdisk
-    local out="$(sgdisk "$ddev" -a 1 -p)"
+    local out="$(sgdisk "$ddev" --set-alignment 1 --print)"
     deviceHeapStart=$(echo "$out" | sed -n "s/^First usable sector is[ ]*\([0-9]*\)[, ]*last usable sector is[ ]*\([0-9]*\)[ ]*$/\1/p")
     deviceHeapEnd=$(echo "$out" | sed -n "s/^First usable sector is[ ]*\([0-9]*\)[, ]*last usable sector is[ ]*\([0-9]*\)[ ]*$/\2/p")
     if [ -z "$deviceHeapStart" ] || [ -z "$deviceHeapEnd" ]; then
