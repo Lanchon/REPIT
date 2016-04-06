@@ -1,10 +1,11 @@
 ## Lanchon REPIT
 ### A Device-Only Data-Sparing Repartitioning Tool For Android
 
-#### [CHANGELOG] - [DOWNLOADS] - [GALAXY S2]
+#### [CHANGELOG] - [DOWNLOADS] - [DEVICES] - [GALAXY S2]
 
 [CHANGELOG]: https://github.com/Lanchon/REPIT/releases
 [DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
+[DEVICES]:   https://github.com/Lanchon/REPIT#device-specific-information
 [GALAXY S2]: https://github.com/Lanchon/REPIT#the-galaxy-s2-family
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
@@ -31,11 +32,10 @@ REPIT is simple, safe, device-only, data-sparing, and easily portable repartitio
   - if REPIT fails, it will nonetheless try to restore your device to a working in-between state. you can solve the blocking issue and REPIT again towards your goal, or otherwise REPIT back to your original configuration. (keeping the in-between state is not recommended as it usually involves 'wasted' unpartitioned space.)
   - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported.
 - easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
-- recovery-independent: REPIT bundles a complete userland environment that is temporarily setup at runtime (courtesy of [Flashize] (https://github.com/Lanchon/Flashize)), freeing it from dependencies on specific recoveries.
 
 #### LIMITATIONS
 
-- REPIT **requires TWRP 2 or TWRP 3.** some recoveries unnecessarily hold device or partition locks during flashing, which prevents all repartitioning tools from working (parted, fdisk, gdisk, and of course REPIT). your chosen recovery must not hold such locks. unfortunately the recoveries bundled with CM 11, 12.0, 12.1 and 13.0 display this issue and are incompatible. recent TWRP 2.8.7.* and 3.0.0.* recoveries comply with this requirement, but only when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
+- REPIT **requires TWRP 2 or TWRP 3.** some recoveries unnecessarily hold device or partition locks during flashing, which prevents all repartitioning tools from working (parted, fdisk, gdisk, and of course REPIT). unfortunately the recoveries bundled with CM 11, 12.0, 12.1 and 13.0 display this issue and are incompatible. recent TWRP 2.8.7.* and 3.0.0.* recoveries comply with this requirement, but only when flashing zips from /tmp. (REPIT will automatically copy itself to /tmp if it detects locks, to help you relaunch from there.)
 - REPIT **does not support encrypted phones.**
 - REPIT **will cause data loss** if the repartitioning process is externally interrupted. **plug into a power source!**
 
@@ -69,7 +69,7 @@ valid zip names: `<prefix>[-partition1=<conf>][-partition2=<conf>]...<suffix>`
 
 valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat|raw]]]`
 
-the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see the i9100 section below.
+the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see (the i9100 section) [https://github.com/Lanchon/REPIT#galaxy-s2-samples] below.
 
 ##### Sizes
 - `same`: do not alter the size of this partition.
@@ -79,7 +79,7 @@ the defaults are device-dependent. please look inside your device's configuratio
 
 #### IN CASE OF ISSUES
 
-if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. if not, make sure to somehow record the log. REPIT creates a log in the same directory you are flashing from (usually /tmp) called 'lanchon-repit.log'. (if you are sideloading, the log will be stored in '/tmp'.) otherwise, you can [obtain a copy of TWRP's log] (http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/) (which includes REPIT's log), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
+if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. if not, make sure to somehow record the log. **REPIT creates a log** in the same directory you are flashing from (usually /tmp) **called 'lanchon-repit.log'.** (if you are sideloading, the log will be stored in '/tmp'.) otherwise, you can [obtain a copy of TWRP's log] (http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/) (which includes REPIT's log), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
 
 **PLEASE NOTE:** your _'did not work'_ report is useless unless you post info from your log.
 
