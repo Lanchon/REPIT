@@ -57,7 +57,7 @@ checkFs_vfat() {
     if ! $fsck_vfat -pw $dev; then
         info "errors detected, retrying the file system check"
         if ! $fsck_vfat -pw $dev; then
-            fatal "file system errors in $(parName $n) could not be automatically fixed"
+            fatal "file system errors in $(parName $n) could not be fixed"
         fi
     fi
 
@@ -91,6 +91,8 @@ processPar_vfat_keep_wet() {
 
     if [ $(( newStart != oldStart || newSize != oldSize )) -ne 0 ]; then
         info "moving/resizing the vfat partition"
+        info "note that the error 'unable to satisfy all constraints on the partition' usually means "\
+"that the new desired partition size would be too small to hold the files already stored in the partition."
         runParted resize $n $newStart $(( newStart + newSize - 1 ))
         rereadParTable
         checkFs_vfat $@
