@@ -9,7 +9,7 @@
 # and any later version.                            #
 #####################################################
 
-### maguro
+### tuna
 
 # This port was possible thanks to the invaluable help of thagringo.
 
@@ -37,19 +37,6 @@
 device_makeFlashizeEnv="env/arm.zip"
 
 device_makeFilenameConfig="system=1.0-cache=0.0605+wipe-data=same"
-
-device_checkDevice() {
-
-    checkTool getprop
-
-    case ":$(getprop ro.product.device):$(getprop ro.build.product):" in
-        *:maguro:*) ;;
-        *)
-            fatal "this package is for '$deviceName' devices; this device is '$(getprop ro.product.device)'"
-            ;;
-    esac
-
-}
 
 device_init() {
 
