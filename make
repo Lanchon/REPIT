@@ -34,9 +34,29 @@ makeZip() {
 
 }
 
-make() {
+makeOne() {
 
     local device="$1"
+
+    rm -f build/lanchon-repit*-"$device".*
+    makeZip "$device"   
+
+}
+
+makeAll() {
+
+    rm -f build/lanchon-repit*
+    local f
+    for file in $(find device -type f -name "*.sh"); do
+        local device="$(basename "$file" .sh)"
+        if [ "$device" != "common" ]; then
+            makeZip "$device"
+        fi
+    done
+
+}
+
+make() {
 
     versionLong="$(sed -n "s/^version=\"\(.*\)\"$/\1/p" repit.sh)"
     if [ -z "$versionLong" ]; then
@@ -48,22 +68,13 @@ make() {
     echo "version: $versionLong"
 
     mkdir -p build
-    if [ -z "$device" ]; then
-
-        rm -f build/lanchon-repit*
-        local f
-        for f in $(find device -name "*.sh"); do
-            local d="$(basename "$f" .sh)"
-            if [ "$d" != "common" ]; then
-                makeZip "$d"
-            fi
-        done
-
+    if [ $# -eq 0 ]; then
+        makeAll
     else
-
-        rm -f build/lanchon-repit*-"$device".*
-        makeZip "$device"
-
+        while [ $# -ne 0 ]; do
+            makeOne "$1"
+            shift
+        done
     fi
 
 }
