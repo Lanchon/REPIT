@@ -4,9 +4,9 @@
 #### [CHANGELOG] - [DEVICES] - [DOWNLOADS] - [GALAXY S2]
 
 [CHANGELOG]: https://github.com/Lanchon/REPIT/releases
-[DEVICES]:   https://github.com/Lanchon/REPIT#device-specific-information
+[DEVICES]:   #device-specific-information
 [DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
-[GALAXY S2]: https://github.com/Lanchon/REPIT#the-galaxy-s2-family
+[GALAXY S2]: #the-galaxy-s2-family
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
 
@@ -71,7 +71,7 @@ valid zip names: `<prefix>[-partition1=<conf>][-partition2=<conf>]...<suffix>`
 
 valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]`
 
-the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see (the i9100 section) [https://github.com/Lanchon/REPIT#galaxy-s2-samples] below.
+the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see (the i9100 section) [#galaxy-s2-samples] below.
 
 ##### Partition Data
 - `keep`: retain the data in the partition. if the partition needs to be moved or resized, this option usually makes the operation significantly slower, even if the partition is mostly empty.
