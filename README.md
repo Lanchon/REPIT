@@ -94,17 +94,17 @@ the defaults are device-dependent. please look inside your device's configuratio
 
 ##### Supported Features
 
-|          | wipe | keep + move       | keep + resize   | keep + move + resize | cypto footer |
-|:--------:|:----:|:-----------------:|:---------------:|:--------------------:|:------------:|
-| **ext4** | YES  | YES (brute force) | YES (efficient) | YES (brute force)    | YES          |
-| **vfat** | YES  | YES (efficient)   | YES (efficient) | YES (efficient)      | no           |
-| **f2fs** | YES  | YES (brute force) | no              | no                   | YES          |
-| **swap** | YES  | no                | no              | no                   | no           |
-| **raw**  | no   | YES               | no              | no                   | no           |
+|          | wipe | keep + move       | keep + resize   | keep + move + resize | crypto footer |
+|:--------:|:----:|:-----------------:|:---------------:|:--------------------:|:-------------:|
+| **ext4** | YES  | YES (brute force) | YES (efficient) | YES (brute force)    | YES           |
+| **vfat** | YES  | YES (efficient)   | YES (efficient) | YES (efficient)      | no            |
+| **f2fs** | YES  | YES (brute force) | no              | no                   | YES           |
+| **swap** | YES  | no                | no              | no                   | no            |
+| **raw**  | no   | YES               | no              | no                   | no            |
 
 - **brute force:** the complete partition extent is operated upon.
 - **efficient:** only the stored data within the partition is operated upon.
-- **cypto footer:** support for encryption metadata at the end of the partition.
+- **crypto footer:** support for encryption metadata at the end of the partition.
 
 #### IN CASE OF ISSUES
 
@@ -116,11 +116,11 @@ if there are any problems, **read the log!** you can scroll it on TWRP. most lik
 
 ## Device-Specific Information
 
-you can find device-specific information in the [device tree] (https://github.com/Lanchon/REPIT/tree/master/device); try searching by device codename using Github's [find file] (https://github.com/Lanchon/REPIT/find/master/device). all configuration options for a specific device are defined in the corresponding `<codename>.sh` file and the `common.sh` files that might exist in the same directory and in directories above it. you might also find device-specific readme files with relevant information.
+each supported device has a unique targeted build of REPIT in the [download] (https://www.androidfilehost.com/?w=files&flid=49911) section. you can also find device-specific information in the [device tree] (https://github.com/Lanchon/REPIT/tree/master/device); try searching by device codename using Github's [find file] (https://github.com/Lanchon/REPIT/find/master/device). all configuration options for a specific device are defined in the corresponding `<device-codename>.sh` file and the `common.sh` files that might exist in the same directory and in directories above it. you might also find device-specific readme files with relevant information.
 
 #### IF YOUR DEVICE IS NOT SUPPORTED
 
-if you cannot find your device in the device tree, that means that it is unsupported. but porting REPIT to a new device is easily done; you can either do it yourself or request that i do it for you. to request a new port, please [follow this steps] (https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md). port requests are welcome.
+so your device is unsupported, tough luck... but porting REPIT to a new device is and easy job; you can either do it yourself or request that i do it for you. to request a new port, please [follow this steps] (https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md). port requests are welcome. if you want to get your hands dirty, check the configuration files for i9100 ([1] (https://github.com/Lanchon/REPIT/blob/master/device/galaxy-s2/exynos-4210/i9100.sh), [2] (https://github.com/Lanchon/REPIT/blob/master/device/galaxy-s2/common.sh)), they are the most complete and commented. but usually you can get away with much less, take a look at [i9300] (https://github.com/Lanchon/REPIT/blob/master/device/i9300.sh). for an example of how to handle out-of-order partitions, check out [janice] (https://github.com/Lanchon/REPIT/blob/master/device/janice.sh).
 
 <br>
 
