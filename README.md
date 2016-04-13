@@ -22,7 +22,7 @@ people have typically solved this by repartitioning. on Samsung devices this is 
 
 #### WHAT IS REPIT ?
 
-REPIT is simple, safe, device-only, data-sparing, and easily portable repartitioning tool for Android devices:
+REPIT is a simple, safe, device-only, data-sparing, and easily portable repartitioning tool for Android devices:
 
 - device-only: just flash a zip file in recovery to repartition the device.
 - simple: rename the zip file before flashing to configure your choice of partition sizes, file systems, wipes, etc.
