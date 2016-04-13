@@ -1,12 +1,13 @@
 ## Lanchon REPIT
 ### A Device-Only Data-Sparing Repartitioning Tool For Android
 
-#### [CHANGELOG] - [DEVICES] - [DOWNLOADS] - [GALAXY S2]
+#### [CHANGELOG] - [DEVICES] - [DOWNLOADS] - [GALAXY S2] - [XDA THREAD]
 
 [CHANGELOG]: https://github.com/Lanchon/REPIT/releases
 [DEVICES]:   #device-specific-information
 [DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
 [GALAXY S2]: #the-galaxy-s2-family
+[XDA THREAD]: http://forum.xda-developers.com/android/software-hacking/tool-lanchon-repit-data-sparing-t3358036
 
 Powered by [Flashize] (https://github.com/Lanchon/Flashize).
 
