@@ -56,9 +56,17 @@ checkFs_f2fs() {
     local n=$1
     local dev=$2
 
-    info "checking the file system"
-    if ! fsck.f2fs -f $dev; then
-        fatal "file system errors in $(parName $n) could not be fixed"
+    if [ -z "$(which fsck.f2fs)" ]; then
+
+        warning "skipping file system check (tool 'fsck.f2fs' is not available)"
+
+    else
+
+        info "checking the file system"
+        if ! fsck.f2fs -f $dev; then
+            fatal "file system errors in $(parName $n) could not be fixed"
+        fi
+
     fi
 
 }
@@ -80,7 +88,7 @@ processPar_f2fs_keep_dry() {
         warning "moving a big f2fs partition can take a very long time; it requires copying the complete partition, including its free space"
     fi
 
-    checkTool fsck.f2fs
+    #checkTool fsck.f2fs
     checkFs_f2fs $n $dev
 
 }
