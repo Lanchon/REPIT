@@ -8,8 +8,8 @@ makeZip() {
 
     echo "device: $device"
 
-    ./make-script "$device"
     script="build/lanchon-repit-$device.sh"
+    ./make-script "$device" "$script"
 
     makeFlashizeEnv="$(sed -n "s/^device_makeFlashizeEnv=\"\(.*\)\"$/\1/p" "$script")"
     if [ -z "$makeFlashizeEnv" ]; then

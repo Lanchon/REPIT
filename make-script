@@ -23,9 +23,9 @@ catCommonScripts() {
 makeScript() {
 
     device="$1"
+    out="${2:-build/lanchon-repit-$device.sh}"
 
     deviceScript="$(find device -name "$device.sh")"
-    out="build/lanchon-repit-$device.sh"
 
     if [ "$device" == "common" ] || [ ! -f "$deviceScript" ]; then
         >&2 echo "error: invalid device: '$device'"

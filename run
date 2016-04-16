@@ -9,8 +9,8 @@ if [ -e run.conf ]; then
     source run.conf
 fi
 
-./make-script "$device"
 script="build/lanchon-repit-$device.sh"
+./make-script "$device" "$script"
 
 adb push "$script" /tmp/repit.sh
 echo
