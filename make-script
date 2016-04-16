@@ -56,7 +56,7 @@ makeScript() {
 
     >>"$out" echo "#####################################################"
     >>"$out" echo
-    >>"$out" echo "deviceName='$device'"
+    >>"$out" printf 'deviceName=%q\n' "$device"
     >>"$out" echo
     >>"$out" echo 'main "$@"'
 
