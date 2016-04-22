@@ -316,7 +316,7 @@ checkUnmount() {
 
     local hint
     if [ -f "$packageName" ]; then
-        if [ "$(dirname $(readlink -f "$packageName"))" != "/tmp" ]; then
+        if [ "$(dirname "$(readlink -f "$packageName")")" != "/tmp" ]; then
             info "copying package to '/tmp'"
             cp -f "$packageName" "/tmp/"
             hint="this package copied itself to '/tmp'; please run it again from there"
