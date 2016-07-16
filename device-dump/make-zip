@@ -11,4 +11,4 @@ rm -f "$signedZip"
 flashize-env dump.sh ../env/arm.zip "$unsignedZip" repit-dump.log
 signapk -w ../key/testkey.x509.pem ../key/testkey.pk8 "$unsignedZip" "$signedZip"
 
-rm "$unsignedZip"
+#rm "$unsignedZip"
