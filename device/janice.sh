@@ -57,7 +57,7 @@
 
 device_makeFlashizeEnv="env/arm.zip"
 
-device_makeFilenameConfig="system=same-data=same-cache=same-preload=same-fota=same-sdcard=max"
+device_makeFilenameConfig="system=1.0-data=3.0-cache=0.03125+wipe-preload=min+wipe-fota=min+wipe+ext4-sdcard=max"
 
 device_checkDevice() {
 
