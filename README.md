@@ -109,7 +109,7 @@ the defaults are device-dependent. please look inside your device's configuratio
 
 #### IN CASE OF ISSUES
 
-if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. if not, make sure to somehow record the log. **REPIT creates a log** in the same directory you are flashing from (usually /tmp) **called 'lanchon-repit.log'.** (if you are sideloading, the log will be stored in '/tmp'.) otherwise, you can [obtain a copy of TWRP's log] (http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/) (which includes REPIT's log), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
+if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. if not, make sure to somehow record the log. **REPIT logs to file '/tmp/lanchon-repit.log'.** otherwise, you can [obtain a copy of TWRP's log] (http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/) (which includes REPIT's log), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
 
 **PLEASE NOTE:** your _'did not work'_ report is useless unless you post info from your log.
 
