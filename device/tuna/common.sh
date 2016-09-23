@@ -36,7 +36,7 @@
 
 device_makeFlashizeEnv="env/arm.zip"
 
-device_makeFilenameConfig="system=1.0-cache=0.0605+wipe-data=same"
+device_makeFilenameConfig="system=1G-cache=62M+wipe-data=same"
 
 device_init() {
 

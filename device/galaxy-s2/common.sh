@@ -13,7 +13,7 @@
 
 device_makeFlashizeEnv="env/arm.zip"
 
-device_makeFilenameConfig="system=1.0-data=same-sdcard=max-preload=min+wipe"
+device_makeFilenameConfig="system=1G-data=same-sdcard=max-preload=min+wipe"
 
 device_init() {
 

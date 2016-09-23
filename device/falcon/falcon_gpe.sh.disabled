@@ -59,10 +59,10 @@
 
 device_makeFlashizeEnv="env/arm.zip"
 
-#device_makeFilenameConfig="cache=0.03125+wipe-system=same-data=max"
-#device_makeFilenameConfig="cache=0.031+wipe-system=0.953-data=max"
+#device_makeFilenameConfig="cache=32M+wipe-system=same-data=max"
+#device_makeFilenameConfig="cache=32M+wipe-system=976M-data=max"
 
-device_makeFilenameConfig="cache=0.414+wipe-system=0.953-data=same"
+device_makeFilenameConfig="cache=424M+wipe-system=976M-data=same"
 
 device_checkDevice() {
 
