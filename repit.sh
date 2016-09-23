@@ -238,7 +238,7 @@ parsePartitionConfiguration() {
 
     if [ -n "$conf" ]; then
 
-        local regex="^\([0-9.]*\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\|f2fs\|swap\|raw\)\)\?\)\?$"
+        local regex="^\([0-9.]*[GgMm]\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\|f2fs\|swap\|raw\)\)\?\)\?$"
 
         if [ -n "$(echo -n "$conf" | sed "s/$regex//")" ]; then
             fatal "invalid partition configuration for '$parName': $parName=$conf"
@@ -269,7 +269,7 @@ parsePackageName() {
         parNames="$parNames$(parGet $n fname)"
     done
     info "valid package names: <prefix>[-($parNames)=<conf>]...<suffix>"
-    info "valid partition <conf> values: [<size-in-GiB>|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]"
+    info "valid partition <conf> values: [<size>(G|M)|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]"
 
     echo
     echo "-----  DEFAULTS  -----"
@@ -386,7 +386,6 @@ setup() {
     #...
     #rereadParTable
 
-    heapSizeUnit=$GiB
     heapMinSize=$(( 8 * MiB ))
 
     device_setup
@@ -486,9 +485,19 @@ setupHeapPartition() {
             size=0
             ;;
         *)
-            local unitFactor=$(( heapSizeUnit / heapSizeGranularity ))
-            size=$(awk "BEGIN {print int(($size) * $unitFactor + 0.5)}")
-            size=$(( size * heapSizeGranularity ))
+            local regex="^\([0-9.]*\)[ ]*\([GgMm]\)\?$"
+            local sizeUnit="$(echo -n "$size" | sed -n "s/$regex/\2/p")"
+            local size="$(echo -n "$size" | sed -n "s/$regex/\1/p")"
+            case "$sizeUnit" in
+                M|m)
+                    sizeUnit=$MiB
+                    ;;
+                G|g|*)
+                    sizeUnit=$GiB
+                    ;;
+            esac
+            local sizeGranularity=$(( heapSizeGranularity ))
+            size=$(awk "BEGIN { print int(($size) * $sizeUnit / $sizeGranularity + 0.5) * $sizeGranularity }")
             if [ $(( size < heapSizeGranularity )) -ne 0 ]; then
                 fatal "$(parName $n): invalid new size"
             fi

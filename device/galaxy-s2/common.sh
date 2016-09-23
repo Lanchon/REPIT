@@ -89,10 +89,6 @@ device_setup() {
 
     ### the following settings are actually per-heap, but can be defined here instead if their values are constant.
 
-    # the unit in which the user configures partition sizes:
-    #heapSizeUnit=$GiB
-    # this defaults to GiB and should normally not be changed.
-    
     # the size of partitions configured with the 'min' keyword:
     #heapMinSize=$(( 8 * MiB ))
     # this defaults to 8 MiB, the smallest power-of-2 size that will fit a standard ext4 file system.
