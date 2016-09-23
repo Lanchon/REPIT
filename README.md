@@ -17,7 +17,7 @@ Powered by [Flashize] (https://github.com/Lanchon/Flashize).
 
 #### WHAT IS THE PROBLEM ?
 
-many older devices, especially the ones originally released before emulated storage was available, were partitioned by the OEM in ways that hinder the installation and use of newer Android versions. for example, the Galaxy S2 GT-I9100 comes with a 0.5 GB /system partition that is unable to fit CM 13.0 and Open GApps, even if you choose the pico version. though its flash is typically a generous 16 GB, the stock /data partition is only 2 GB which means that with today's ART you run out of space to install applications in no time. it also comes with a 0.5 GB /preload partition that goes unused on custom ROMs.
+many older devices, especially the ones originally released before emulated storage was available, were partitioned by the OEM in ways that hinder the installation and use of newer Android versions. for example, the Galaxy S2 GT-I9100 comes with a 0.5 GiB /system partition that is unable to fit CM 13.0 and Open GApps, even if you choose the pico version. though its flash is typically a generous 16 GiB, the stock /data partition is only 2 GiB which means that with today's ART you run out of space to install applications in no time. it also comes with a 0.5 GiB /preload partition that goes unused on custom ROMs.
 
 people have typically solved this by repartitioning. on Samsung devices this is a tricky process that involves the use of download mode, a Windows PC, Windows device drivers that support the device's download mode, a 'pirated' proprietary PC software called Odin, the right PIT and other files, and correct configuration. (a free software alternative to Odin called Heimdall works on many devices and is cross platform and supports Linux PCs, but the rest of the hurdles remain.) the procedure has potential for hard-bricking if the wrong files are flashed. after repartitioning, all affected partitions must be reflashed or formatted anew, a procedure that many get wrong. and of course, all data in the affected partitions gets wiped (typically the complete device) making this an ultra-inconvenient affair.
 
@@ -133,7 +133,7 @@ REPIT started its life as i9100-only tool and it inherits this doc section from 
 
 #### IF... your stock-partitioned device cannot flash gapps after updating to CM 13.0
 
-download and flash the file as it is. it will get most space from the unused /preload partition and only 8MB for the internal sdcard, and then make /system 1GB in size. it will keep you current /data size constant, whatever it is. it will retain all data except data in /preload, which is unused in custom roms (but some multi-boot setups use it).
+download and flash the file as it is. it will get most space from the unused /preload partition and only 8 MiB for the internal sdcard, and then make /system 1 GiB in size. it will keep you current /data size constant, whatever it is. it will retain all data except data in /preload, which is unused in custom roms (but some multi-boot setups use it).
 
 #### IF... your device is usable
 
@@ -163,7 +163,7 @@ for this device, partition alignment is 4 MiB and partition sizes get rounded to
   <br>`-data=+wipe`
 - wipe/change internal sdcard to ext4 (not recommended):
   <br>`-sdcard=+wipe+ext4`
-- **repartition to 1GB system, 6GB data, no preload...**
+- **repartition to 1 GiB system, 6 GiB data, no preload...**
   - ...keeping all other data:
     <br>`-system=1G-data=6G-sdcard=max-preload=min+wipe`
   - ...keeping all other data, **for phones with ext4-formatted internal sdcard:**
