@@ -493,7 +493,7 @@ setupHeapPartition() {
                 fatal "$(parName $n): invalid new size"
             fi
             ;;
-    esac    
+    esac
 
     case "$content" in
         keep)
@@ -503,7 +503,7 @@ setupHeapPartition() {
         *)
             fatal "$(parName $n): invalid content policy"
             ;;
-    esac    
+    esac
 
     case "$fs" in
         ext4)
@@ -519,7 +519,7 @@ setupHeapPartition() {
         *)
             fatal "$(parName $n): invalid file system type"
             ;;
-    esac    
+    esac
 
     $(parSet $n size $size)
     $(parSet $n content $content)
