@@ -70,7 +70,7 @@ configure the script by renaming the zip file before flashing it.
 
 valid zip names: `<prefix>[-partition1=<conf>][-partition2=<conf>]...<suffix>`
 
-valid partition `<conf>` values: `[<size>|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]`
+valid partition `<conf>` values: `[<size>(G|M)|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]`
 
 the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see (the i9100 section) [#galaxy-s2-samples] below.
 
@@ -82,7 +82,7 @@ the defaults are device-dependent. please look inside your device's configuratio
 - `same`: do not alter the size of this partition.
 - `min`: make this unused partition a minimum yet formattable size (typically 8 MiB, but device-dependent).
 - `max`: make this partition as big as possible (at most one partition per 'heap' can have its size set to 'max').
-- `<size>`: fractional number expressing the desired partition size (typically in GiB, but device-dependent). this value gets rounded to the nearest acceptable discreet value. the size granularity is device-dependent, but typically set to match the device-dependent alignment size, which typically is 1 or 4 MiB.
+- `<size>(G|M)`: fractional number followed by a size unit expressing the desired partition size. the unit is either `G` for GiB or `M` for MiB. this value gets rounded to the nearest acceptable discreet value. the size granularity is device-dependent, but typically set to match the device-dependent partition alignment (which typically is 1 or 4 MiB).
 
 ##### Partition Types
 - `ext4` and `vfat`: these partitions have full move, resize and wipe support.
@@ -145,7 +145,7 @@ first get [IsoRec TWRP 2.8.7.0] (http://forum.xda-developers.com/galaxy-s2/orig-
 
 valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
 
-sizes are expressed in GiB and get rounded to the nearest 4 MiB boundary.
+for this device, partition alignment is 4 MiB and partition sizes get rounded to the nearest 4 MiB boundary. (it is typical for all devices to use the same value for partition alignment and granularity.)
 
 ##### Galaxy S2 Defaults
 - `-system=same+keep+ext4`
@@ -156,21 +156,21 @@ sizes are expressed in GiB and get rounded to the nearest 4 MiB boundary.
 ##### Galaxy S2 Samples
 - repartition to stock, wiping preload (in case you used a very small preload before):
   <br>(**note:** in general it is not recommended to resize file systems by large factors.)
-  <br>`lanchon-repit-XXXXXXXX-system=0.5-data=2-sdcard=max-preload=0.5+wipe-i9100.zip`
+  <br>`lanchon-repit-XXXXXXXX-system=0.5G-data=2G-sdcard=max-preload=0.5G+wipe-i9100.zip`
 - repartition to stock (without wiping preload):
-  <br>`-system=0.5-data=2-sdcard=max-preload=0.5`
+  <br>`-system=0.5G-data=2G-sdcard=max-preload=0.5G`
 - wipe data:
   <br>`-data=+wipe`
 - wipe/change internal sdcard to ext4 (not recommended):
   <br>`-sdcard=+wipe+ext4`
 - **repartition to 1GB system, 6GB data, no preload...**
   - ...keeping all other data:
-    <br>`-system=1-data=6-sdcard=max-preload=min+wipe`
+    <br>`-system=1G-data=6G-sdcard=max-preload=min+wipe`
   - ...keeping all other data, **for phones with ext4-formatted internal sdcard:**
-    <br>`-system=1-data=6-sdcard=max++ext4-preload=min+wipe`
+    <br>`-system=1G-data=6G-sdcard=max++ext4-preload=min+wipe`
   - ...keeping system and sdcard but **WIPING DATA:**
     <br>(**note:** wiping data is much faster than moving it around if system is being resized and data is large.)
-    <br>`-system=1-data=6+wipe-sdcard=max-preload=min+wipe`
+    <br>`-system=1G-data=6G+wipe-sdcard=max-preload=min+wipe`
 
 <br>
 
