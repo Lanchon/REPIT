@@ -108,7 +108,7 @@ device_setup() {
     
     # user-configured partition sizes will be rounded (to nearest) to multiples of this value:
     #heapSizeGranularity=$heapAlignment
-    # this defaults to $heapAlignment (in device_setup only) and should normally not be changed.
+    # this defaults to $heapAlignment and should normally not be changed.
 
 }
 

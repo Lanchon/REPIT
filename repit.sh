@@ -391,10 +391,6 @@ setup() {
 
     device_setup
 
-    if [ -z "$heapSizeGranularity" ]; then
-        heapSizeGranularity=$heapAlignment
-    fi
-
     info "checking existing partitions"
 
     local n
@@ -607,7 +603,13 @@ forEachHeap() {
         heapStartAligned=$(alignUp $heapStart)
         heapEndAligned=$(alignDown $heapEnd)
 
-        "$@"
+        if [ -z "$heapSizeGranularity" ]; then
+            heapSizeGranularity=$heapAlignment
+            "$@"
+            heapSizeGranularity=""
+        else
+            "$@"
+        fi
 
     done
 
