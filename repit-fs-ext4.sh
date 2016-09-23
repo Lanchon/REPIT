@@ -76,6 +76,43 @@ checkFs_ext4() {
 
 }
 
+checkParSize_ext4() {
+
+    local n=$1
+    local dev=$2
+    local oldSize=$3
+    local newSize=$4
+
+    local footerSize=$(parFooterSize $n)
+    local newFsSize=$(( newSize - footerSize ))
+
+    #if [ $(( newSize < oldSize )) -ne 0 ]; then
+    #if [ $(( newFsSize < oldSize )) -ne 0 ]; then
+    if true; then
+        info "validating the new partition size"
+        local blockSize=$(tune2fs -l $dev 2>/dev/null | sed -n "s/^Block size:[ ]*\([0-9]*\)[ ]*$/\1/p")
+        if [ -n "$blockSize" ]; then
+            #info "file system block size: $blockSize bytes"
+            local minBlocks=$(resize2fs -P $dev 2>/dev/null | sed -n "s/^Estimated minimum size of the filesystem:[ ]*\([0-9]*\)[ ]*$/\1/p")
+            if [ -n "$minBlocks" ]; then
+                local minSize=$(( ( blockSize / sectorSize ) * minBlocks ))
+                info "estimated minimum file system size: $(printSizeMiB $minSize)"
+                local newFsFree=$(( newFsSize - minSize ))
+                if [ $(( newFsFree >= 0 )) -ne 0 ]; then
+                    info "estimated free space after resize: $(printSizeMiB $newFsFree)"
+                else
+                    fatal "the new partition size is estimated to be too small to hold the current contents of the file system by $(printSizeMiB $(( -newFsFree )) )"
+                fi
+            else
+                warning "partition size validation skipped: cannot estimate the minimum file system size"
+            fi
+        else
+            warning "partition size validation skipped: cannot determine the file system block size"
+        fi
+    fi
+
+}
+
 processPar_ext4_keep_dry() {
 
     local n=$1
@@ -100,6 +137,7 @@ processPar_ext4_keep_dry() {
     checkTool e2fsck
     checkTool resize2fs
     checkFs_ext4 $n $dev
+    checkParSize_ext4 $n $dev $oldSize $newSize
 
 }
 
