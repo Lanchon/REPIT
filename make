@@ -47,7 +47,7 @@ makeAll() {
 
     rm -f build/lanchon-repit*
     local f
-    for file in $(find device -type f -name "*.sh"); do
+    for file in $(find device -type f -not -path '*/\.*' -name "*.sh"); do
         local device="$(basename "$file" .sh)"
         if [ "$device" != "common" ]; then
             makeZip "$device"
