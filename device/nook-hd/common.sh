@@ -9,28 +9,9 @@
 # and any later version.                            #
 #####################################################
 
-### ovation
+### nook-hd
 
-# # This port was possible thanks to the invaluable help of 149113.
-# 
-# Caution: invalid backup GPT header, but valid main header; regenerating
-# backup header from main header.
-# 
-# Warning! Main and backup partition tables differ! Use the 'c' and 'e' options
-# on the recovery & transformation menu to examine the two tables.
-# 
-# Warning! One or more CRCs don't match. You should repair the disk!
-# 
-# ****************************************************************************
-# Caution: Found protective or hybrid MBR and corrupt GPT. Using GPT, but disk
-# verification and recovery are STRONGLY recommended.
-# ****************************************************************************
-# Disk /dev/block/mmcblk0: 30535680 sectors, 14.6 GiB
 # Logical sector size: 512 bytes
-# Disk identifier (GUID): 3290B191-5EED-4A94-BFD4-0ECCA08BCEF4
-# Partition table holds up to 128 entries
-# First usable sector is 34, last usable sector is 30535646
-# Total free space is 29885 sectors (14.6 MiB)
 # 
 # Number  Start (sector)    End (sector)  Size       Code  Name
 #    1             256             511   128.0 KiB   8300  xloader
