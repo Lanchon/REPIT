@@ -238,7 +238,7 @@ parsePartitionConfiguration() {
 
     if [ -n "$conf" ]; then
 
-        local regex="^\([0-9.]*[GgMm]\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\|f2fs\|swap\|raw\)\)\?\)\?$"
+        local regex="^\(\|[0-9]\+[GgMm]\|[0-9]\+[.][0-9]*[GgMm]\|[.][0-9]\+[GgMm]\|same\|min\|max\)\(+\(\|keep\|wipe\)\(+\(\|ext4\|vfat\|f2fs\|swap\|raw\)\)\?\)\?$"
 
         if [ -n "$(echo -n "$conf" | sed "s/$regex//")" ]; then
             fatal "invalid partition configuration for '$parName': $parName=$conf"
