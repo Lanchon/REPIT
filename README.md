@@ -3,13 +3,13 @@
 
 #### [CHANGELOG] - [DEVICES] - [DOWNLOADS] - [GALAXY S2] - [XDA THREAD]
 
-[CHANGELOG]: https://github.com/Lanchon/REPIT/releases
-[DEVICES]:   #device-specific-information
-[DOWNLOADS]: https://www.androidfilehost.com/?w=files&flid=49911
-[GALAXY S2]: #the-galaxy-s2-family
+[CHANGELOG]:  https://github.com/Lanchon/REPIT/releases
+[DEVICES]:    #device-specific-information
+[DOWNLOADS]:  https://www.androidfilehost.com/?w=files&flid=49911
+[GALAXY S2]:  #the-galaxy-s2-family
 [XDA THREAD]: http://forum.xda-developers.com/android/software-hacking/tool-lanchon-repit-data-sparing-t3358036
 
-Powered by [Flashize] (https://github.com/Lanchon/Flashize).
+Powered by [Flashize](https://github.com/Lanchon/Flashize).
 
 <br>
 
@@ -34,7 +34,7 @@ REPIT is a simple, safe, device-only, data-sparing, and easily portable repartit
   - my estimate is that between 500 to 1000 users already used REPIT for 'major' changes on the i9100 and no incidents of data loss were reported. (note: these are very stale numbers dating from March 2016, when REPIT was still in its infancy.)
 - easily portable: a simple configuration file is all that is needed to port REPIT to a new device.
 
-you can look at [the log of a demo run] (https://raw.githubusercontent.com/Lanchon/REPIT/master/LOG.txt) to get a feel for what REPIT can do. in this run on a Galaxy S2 it grows the /system and /data ext4 partitions to 1 and 6 GiB respectively, it wipes and shrinks the unused /preload partition to a minimum size, and it adjusts the size of the internal /sdcard vfat partition to occupy whatever space is left. REPIT plans, orders and undertakes a safe series of partition resize and move operations to reach its goal, all the while keeping and eye on details such as alignments and retaining the data present in the /system, /data and /sdcard partitions.
+you can look at [the log of a demo run](https://raw.githubusercontent.com/Lanchon/REPIT/master/LOG.txt) to get a feel for what REPIT can do. in this run on a Galaxy S2 it grows the /system and /data ext4 partitions to 1 and 6 GiB respectively, it wipes and shrinks the unused /preload partition to a minimum size, and it adjusts the size of the internal /sdcard vfat partition to occupy whatever space is left. REPIT plans, orders and undertakes a safe series of partition resize and move operations to reach its goal, all the while keeping and eye on details such as alignments and retaining the data present in the /system, /data and /sdcard partitions.
 
 #### LIMITATIONS
 
@@ -72,7 +72,7 @@ valid zip names: `<prefix>[-partition1=<conf>][-partition2=<conf>]...<suffix>`
 
 valid partition `<conf>` values: `[<size>(G|M)|same|min|max][+[keep|wipe][+[ext4|vfat|f2fs|swap|raw]]]`
 
-the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see [the i9100 section] (#galaxy-s2-samples) below.
+the defaults are device-dependent. please look inside your device's configuration file for more information. for configuration samples please see [the i9100 section](#galaxy-s2-samples) below.
 
 ##### Partition Data
 - `keep`: retain the data in the partition. if the partition needs to be moved or resized, this option usually makes the operation significantly slower, even if the partition is mostly empty.
@@ -109,7 +109,7 @@ the defaults are device-dependent. please look inside your device's configuratio
 
 #### IN CASE OF ISSUES
 
-if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. if not, make sure to somehow record the log. **REPIT logs to file '/tmp/lanchon-repit.log'.** otherwise, you can [obtain a copy of TWRP's log] (http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/) (which includes REPIT's log), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
+if there are any problems, **read the log!** you can scroll it on TWRP. most likely it will tell you what is wrong and what to do about it. if not, make sure to somehow record the log. **REPIT logs to file '/tmp/lanchon-repit.log'.** otherwise, you can [obtain a copy of TWRP's log](http://rootzwiki.com/topic/24120-how-to-get-a-log-from-twrp/) (which includes REPIT's log), or if not at least take a picture of it with your camera. in TWRP 2.8.7.* you can see a full screen log by hitting the back button once, then the center button at the bottom of the screen that looks like a TV screen. after recording the log, you can try reflashing the script if you understand what happened and flashing it again makes sense.
 
 **PLEASE NOTE:** your _'did not work'_ report is useless unless you post info from your log.
 
@@ -117,11 +117,11 @@ if there are any problems, **read the log!** you can scroll it on TWRP. most lik
 
 ## Device-Specific Information
 
-each supported device has a unique targeted build of REPIT in the [download] (https://www.androidfilehost.com/?w=files&flid=49911) section. you can also find device-specific information in the [device tree] (https://github.com/Lanchon/REPIT/tree/master/device); try searching by device codename using Github's [find file] (https://github.com/Lanchon/REPIT/find/master/device). all configuration options for a specific device are defined in the corresponding `<device-codename>.sh` file and the `common.sh` files that might exist in the same directory and in directories above it. you might also find device-specific readme files with relevant information.
+each supported device has a unique targeted build of REPIT in the [download](https://www.androidfilehost.com/?w=files&flid=49911) section. you can also find device-specific information in the [device tree](https://github.com/Lanchon/REPIT/tree/master/device); try searching by device codename using Github's [find file](https://github.com/Lanchon/REPIT/find/master/device). all configuration options for a specific device are defined in the corresponding `<device-codename>.sh` file and the `common.sh` files that might exist in the same directory and in directories above it. you might also find device-specific readme files with relevant information.
 
 #### IF YOUR DEVICE IS NOT SUPPORTED
 
-so your device is unsupported, tough luck... but porting REPIT to a new device is an easy job; you can either do it yourself or request that i do it for you. to request a new port, please [follow this steps] (https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md); port requests are welcome. if you want to get your hands dirty, check the configuration files for i9100 ([1] (https://github.com/Lanchon/REPIT/blob/master/device/galaxy-s2/exynos-4210/i9100.sh), [2] (https://github.com/Lanchon/REPIT/blob/master/device/galaxy-s2/common.sh)), they are the most complete and commented. but usually you can get away with much less, take a look at [i9300] (https://github.com/Lanchon/REPIT/blob/master/device/i9300.sh). for an example of how to handle out-of-order partitions, check out [janice] (https://github.com/Lanchon/REPIT/blob/master/device/janice.sh).
+so your device is unsupported, tough luck... but porting REPIT to a new device is an easy job; you can either do it yourself or request that i do it for you. to request a new port, please [follow this steps](https://github.com/Lanchon/REPIT/blob/master/device-dump/README.md); port requests are welcome. if you want to get your hands dirty, check the configuration files for i9100 ([1](https://github.com/Lanchon/REPIT/blob/master/device/galaxy-s2/exynos-4210/i9100.sh), [2](https://github.com/Lanchon/REPIT/blob/master/device/galaxy-s2/common.sh)), they are the most complete and commented. but usually you can get away with much less, take a look at [i9300](https://github.com/Lanchon/REPIT/blob/master/device/i9300.sh). for an example of how to handle out-of-order partitions, check out [janice](https://github.com/Lanchon/REPIT/blob/master/device/janice.sh).
 
 <br>
 
@@ -129,7 +129,7 @@ so your device is unsupported, tough luck... but porting REPIT to a new device i
 
 REPIT started its life as i9100-only tool and it inherits this doc section from the good old days.
 
-> **IMPORTANT NOTE:** this script will not work if your phone is encrypted. you need to decrypt your phone first. this was found and reported by XDA user **jer194** [here] (http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65307128). if you run the script on an encrypted phone anyway, no damage will come: it will just refuse to start, complaining that it cannot reread the partition table.
+> **IMPORTANT NOTE:** this script will not work if your phone is encrypted. you need to decrypt your phone first. this was found and reported by XDA user **jer194** [here](http://forum.xda-developers.com/galaxy-s2/orig-development/tool-lanchon-repit-data-sparing-t3311747/post65307128). if you run the script on an encrypted phone anyway, no damage will come: it will just refuse to start, complaining that it cannot reread the partition table.
 
 #### IF... your stock-partitioned device cannot flash gapps after updating to CM 13.0
 
@@ -141,7 +141,7 @@ you can nonetheless use this script to do general repartitioning, file system fi
 
 #### Galaxy S2 HOW TO
 
-first get [official TWRP] (https://twrp.me/devices/samsunggalaxys2i9100.html) running on your device, then follow the generic how-to.
+first get [official TWRP](https://twrp.me/devices/samsunggalaxys2i9100.html) running on your device, then follow the generic how-to.
 
 valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
 
@@ -182,4 +182,4 @@ i believe this software to be very safe and i exercised it a lot before posting 
 
 -----
 
-for historical information regarding the CHEF-KOCH incident (and XDA's response), please follow [this link] (https://github.com/Lanchon/REPIT/blob/master/README-CHEF-KOCH.md).
+for historical information regarding the CHEF-KOCH incident (and XDA's response), please follow [this link](https://github.com/Lanchon/REPIT/blob/master/README-CHEF-KOCH.md).
