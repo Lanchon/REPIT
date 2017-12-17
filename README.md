@@ -141,7 +141,7 @@ you can nonetheless use this script to do general repartitioning, file system fi
 
 #### Galaxy S2 HOW TO
 
-first get [official TWRP](https://twrp.me/devices/samsunggalaxys2i9100.html) running on your device, then follow the generic how-to.
+first get [official TWRP](https://twrp.me/samsung/samsunggalaxys2i9100.html) running on your device, then follow the generic how-to.
 
 valid zip names: `<prefix>[-system=<conf>][-data=<conf>][-sdcard=<conf>][-preload=<conf>]<suffix>`
 
